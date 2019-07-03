@@ -1,0 +1,46 @@
+.cell {
+    margin: -17px 5px;
+    position: relative;
+}
+
+.columns {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.actions {
+    flex: 0 0 auto;
+}
+
+.actions a {
+    display: block;
+}
+
+.editor {
+    flex: 1 1 auto;
+}
+
+.result {
+    margin-left:30px;
+}
+
+.image {
+    width: 100%;
+}
+
+.buttonColor {
+    color: rgb(100, 100, 100);
+}
+
+.addCell {
+    visibility: hidden;
+}
+
+.cell:hover .addCell {
+    visibility: visible;
+}
+
+.error {
+    color: #c0392b;
+}

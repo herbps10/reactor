@@ -1,0 +1,15 @@
+.App {
+  margin: 20px auto;
+  max-width: 700px;
+}
+
+.CodeMirror {
+  height: auto;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: block;
+}
