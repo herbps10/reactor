@@ -12,6 +12,7 @@
     "react": "^16.8.6",
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.8.6",
+    "react-markdown": "^4.1.0",
     "react-scripts": "3.0.1"
   },
   "scripts": {

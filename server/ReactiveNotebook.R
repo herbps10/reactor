@@ -5,6 +5,11 @@ library(pryr)
 
 staticDir = tempdir()
 
+md <- function(text) {
+  class(text) <- "md"
+  text
+}
+
 ReactiveNotebook <- R6Class("ReactiveNotebook",
   public = list(
     cells = list(),

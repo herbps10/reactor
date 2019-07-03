@@ -1,6 +1,5 @@
 import React from 'react';
-import CellList from './CellList.js';
-import Cell from './Cell.js';
+import CellList from './components/CellList.js';
 import { observer } from 'mobx-react';
 import './App.css';
 

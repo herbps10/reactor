@@ -5,6 +5,7 @@ class Cell {
     value = "";
     result = "";
     error = "";
+    RClass = "";
     hasImage = false;
     constructor(value, result) {
         this.id = uuidv1();

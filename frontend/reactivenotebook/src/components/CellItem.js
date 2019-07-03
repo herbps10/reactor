@@ -1,13 +1,14 @@
 import React from 'react';
 import CodeMirror from 'react-codemirror';
 import { observer } from 'mobx-react';
+import ReactMarkdown from 'react-markdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import AddCellButton from './AddCellButton.js';
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/idea.css";
 import styles from "./CellItem.module.css";
-import Cell from './Cell.js';
+import Cell from '../stores/Cell.js';
 
 import('codemirror/mode/r/r');
 
@@ -61,16 +62,24 @@ const CellItem = observer(class CellItem extends React.Component {
         }
     }
 
+    resultView() {
+        if(this.props.cell.hasImage) return null;
+        if(this.props.cell.RClass == "md" && this.props.cell.renderResult().length > 0)
+            return <ReactMarkdown source={this.props.cell.renderResult().join("\n")} />
+        return (
+            <pre>
+                {this.props.cell.renderResult()}
+            </pre>
+        )
+    }
+
     render() {
         const image = this.props.cell.hasImage ? <img 
             src={`http://localhost:5000/static/${this.props.cell.id}.svg?${this.props.cell.lastUpdate}`}
             onLoad={this.onImageLoad}
             className={styles.image} /> : null;
 
-        const result = this.props.cell.hasImage ? null : <pre>
-            {this.props.cell.renderResult()}
-        </pre>
-
+        const result = this.resultView();
         const error = this.props.cell.error == "" ? null : (
             <div className={styles.error}>{this.props.cell.error}</div>
         );

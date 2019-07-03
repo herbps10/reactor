@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Cell from './Cell.js';
-import CellStore from './CellStore.js';
+import Cell from './stores/Cell.js';
+import CellStore from './stores/CellStore.js';
 import WebSocketService from './WebSocketService.js';
 
 const cellStore = new CellStore(new WebSocketService());

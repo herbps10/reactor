@@ -31,6 +31,7 @@ server <- startServer(
             list(
               id = x,
               result = paste0(capture.output(changeset[[x]]), collapse = "\n"),
+              RClass = class(changeset[[x]]),
               #hasImage = FALSE
               hasImage = notebook$cells[[x]]$hasImage
             )
