@@ -10,6 +10,7 @@
     "mobx-react": "^6.1.1",
     "node-uuid": "^1.4.8",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^11.0.4",
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.8.6",
     "react-markdown": "^4.1.0",

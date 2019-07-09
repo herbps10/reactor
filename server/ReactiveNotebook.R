@@ -3,11 +3,22 @@ library(igraph)
 library(tidyverse)
 library(pryr)
 
-staticDir = tempdir()
 
 md <- function(text) {
   class(text) <- "md"
   text
+}
+
+html <- function(text) {
+  class(text) <- "html"
+  text
+}
+
+slider <- function() {
+  view <- 1
+  class(view) <- "view"
+  attr(view, 'view') <- "<input type='range' />"
+  view
 }
 
 ReactiveNotebook <- R6Class("ReactiveNotebook",
@@ -19,7 +30,15 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
     run_in_env = function(code) {
       eval(parse(text = code), private$env)
     },
-    run_cell = function(cell) {
+    delete_cell = function(cell) {
+      if(!is.null(self$cells[[cell$id]]$name != "")) {
+        self$run_in_env(paste0("rm(", self$cells[[cell$id]]$name, ")"))
+        self$run_in_env(paste0("rm(", self$cells[[cell$id]]$name, "_saved)"))
+      }
+      self$cells[[cell$id]] <- NULL
+      private$graph <- delete.vertices(private$graph, V(private$graph)[[cell$id]])
+    },
+    run_cell = function(cell, update = TRUE) {
       private$callstack = c()
       
       # Capture plots
@@ -27,7 +46,7 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       
       ggplot2:::.store$set(NULL)
       
-      svgPath <- paste0(staticDir, "\\", cell$id, ".svg")
+      svgPath <- paste0(file.path(staticDir, cell$id), ".svg")
       svg(filename = svgPath)
       dev.control(displaylist = "enable")
       #eval(parse(text = paste0("svg('", str_replace_all(svgPath, "\\\\", "/"), "')")), private$env)
@@ -37,8 +56,8 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       if(str_detect(cell$value, "^.+ <-")) {
         name <- str_match(cell$value, "^(.+?) ?<-")[,2]
         modified_cell <- str_replace(cell$value, paste0("^", name), paste0(name, "_saved"))
-        eval(parse(text = private$wrap(name)), private$env)
-        res <- eval(parse(text = modified_cell), private$env)
+        self$run_in_env(private$wrap(name))
+        res <- self$run_in_env(modified_cell)
       }
       else {
         res <- eval(parse(text = cell$value), private$env)
@@ -53,7 +72,7 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       }
       hasImage = !is.null(p[[1]]) || !is.null(p2)
       
-      self$cells[[cell$id]] = list(id = cell$id, value = cell$value, hasImage = hasImage);
+      self$cells[[cell$id]] = list(id = cell$id, value = cell$value, hasImage = hasImage, name = name, result = res);
       
       if(!is.null(name)) {
         private$name_to_id[name] = cell$id
@@ -70,19 +89,20 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
         }
       }
       
-      # Get dependencies
-      ego_graph <- make_ego_graph(self$getGraph(), order = 1, nodes = cell$id, mindist = 0, mode = "in")[[1]]
-      
-      # Sort dependencies to topological order
-      dependencies <- names(topo_sort(ego_graph, mode = "in")[-1])
       
       if(is.null(res)) res <- ""
+      updates = c(cell$id)
       
-      updates = list()
-      updates[[cell$id]] <- res
-      
-      for(dependency in dependencies) {
-        updates <- c(updates, self$run_cell(self$cells[[dependency]]))
+      if(update == TRUE) {
+        # Get dependencies
+        ego_graph <- make_ego_graph(self$getGraph(), order = 1000, nodes = cell$id, mindist = 0, mode = "in")[[1]]
+        
+        # Sort dependencies to topological order
+        dependencies <- names(topo_sort(ego_graph, mode = "in")[-1])
+        
+        for(dependency in dependencies) {
+          updates <- c(updates, self$run_cell(self$cells[[dependency]], update = FALSE))
+        }
       }
       
       updates
@@ -115,19 +135,33 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
 )
 
 nb <- ReactiveNotebook$new()
-
-error <- NULL
-result <- tryCatch({
-  nb$run_cell(list(id = "a", value = "a"))
-}, error = function(e) {
-  e
-})
-
-nb$run_cell(list(id = "a", value = "df <- data.frame(x = 1:10, y = 1:10)"))
-nb$run_cell(list(id = "b", value = "ggplot(df, aes(x, y)) + geom_point()"))
-nb$run_cell(list(id = "d", value = "plot(df$x, df$y)"))
-
-nb$data_frame()
+nb$run_cell(list(id = "start", value = "start <- 3"))
+nb$run_cell(list(id = "x", value = "x <- seq(start, 10, 0.1)"))
+nb$run_cell(list(id = "y", value = "y <- sin(x)"))
+#
+#nb$delete_cell(list(id = "y"))
+#nb$data_frame()
+#nb$run_cell(list(id = "y2", value = "y2 <- cos(x)"))
+#nb$run_cell(list(id = "plot", value = "{
+#  plot(x, y, type = 'l')
+#  plot(x, y2, col = 'green')
+#}"))
+#
+#nb$run_cell(list(id = "start", value = "start <- 5"))
+#
+#nb$run_in_env("length(y)")
+#nb$run_in_env("length(y2)")
+#
+#
+#plot(nb$getGraph())
+#
+#nb <- ReactiveNotebook$new()
+#
+#nb$run_cell(list(id = "a", value = "df <- data.frame(x = 1:10, y = 1:10)"))
+#nb$run_cell(list(id = "b", value = "ggplot(df, aes(x, y)) + geom_point()"))
+#nb$run_cell(list(id = "d", value = "plot(df$x, df$y)"))
+#
+#nb$data_frame()
 
 #notebook <- ReactiveNotebook$new()
 #

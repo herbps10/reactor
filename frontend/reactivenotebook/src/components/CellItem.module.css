@@ -1,28 +1,45 @@
 .cell {
-    margin: -17px 5px;
+    /*margin: -17px 5px;*/
     position: relative;
 }
 
 .columns {
     display: flex;
-    border: 1px solid #ccc;
+    border: 1px solid white;
     padding: 5px;
+}
+
+.cell:hover .columns {
+    border: 1px solid #ccc;
 }
 
 .actions {
     flex: 0 0 auto;
+    position: relative;
+    padding-left: 5px;
 }
 
-.actions a {
-    display: block;
+.cell:hover .actions button {
+  visibility: visible;
 }
+
+.actions button {
+    display: block;
+    visibility: hidden;
+}
+
 
 .editor {
     flex: 1 1 auto;
 }
 
 .result {
-    margin-left:30px;
+    margin-left: 30px;
+}
+
+.result pre {
+  padding: 0px;
+  margin: 0px;
 }
 
 .image {
@@ -43,4 +60,54 @@
 
 .error {
     color: #c0392b;
+}
+
+.gripHandle {
+  visibility: hidden;
+  position: absolute;
+  left: -4px;
+  top: -5px;
+  bottom: -5px;
+  width: 12px;
+}
+
+.gripHandle::after {
+  content: " ";
+  position: absolute;
+  border-left: 1px dotted #ccc;
+  border-right: 1px dotted #ccc;
+  width: 2px;
+  left: 4px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.cell:hover .gripHandle {
+  visibility: visible;
+}
+
+.active {
+}
+
+.mirror {
+  /*transition: max-height 0.5s;*/
+  overflow: hidden;
+}
+
+.mirrorActive {
+  max-height: 1000px;
+}
+
+.mirrorInactive {
+  max-height: 0em;
+}
+
+.title {
+  position: absolute;
+  top: -1.6em;
+  left: 25px;
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+  min-width: 100px;
+  padding-left: 15px;
 }

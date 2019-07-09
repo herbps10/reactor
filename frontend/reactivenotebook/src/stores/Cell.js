@@ -6,6 +6,7 @@ class Cell {
     result = "";
     error = "";
     RClass = "";
+    name = "";
     hasImage = false;
     constructor(value, result) {
         this.id = uuidv1();
@@ -13,18 +14,16 @@ class Cell {
         this.result = result;
         this.lastUpdate = new Date().getTime();
     }
-
-    renderResult() {
-        return this.result;
-    }
 }
 
 decorate(Cell, {
     value: observable,
     result: observable,
+    name: observable,
     lastUpdate: observable,
     hasImage: observable,
-    error: observable
+    error: observable,
+    RClass: observable
 })
 
 export default Cell;

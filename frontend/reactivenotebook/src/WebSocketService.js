@@ -8,10 +8,8 @@ class WebSocketService {
         this.socket.addEventListener('open', this.onOpen);
     }
     onOpen() {
-        console.log("onOpen");
     }
     sendMessage(message) {
-        console.log(message);
         this.socket.send(message);
     }
     addReceiveListener(f) {

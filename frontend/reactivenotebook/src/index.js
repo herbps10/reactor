@@ -8,7 +8,6 @@ import CellStore from './stores/CellStore.js';
 import WebSocketService from './WebSocketService.js';
 
 const cellStore = new CellStore(new WebSocketService());
-cellStore.addCell(new Cell("", ""));
 
 window.cellStore = cellStore;
 
