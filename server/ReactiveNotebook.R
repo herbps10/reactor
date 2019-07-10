@@ -9,6 +9,11 @@ md <- function(text) {
   text
 }
 
+latex <- function(text) {
+  class(text) <- "latex"
+  text
+}
+
 html <- function(text) {
   class(text) <- "html"
   text

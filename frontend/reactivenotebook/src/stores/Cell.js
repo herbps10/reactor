@@ -14,6 +14,10 @@ class Cell {
         this.result = result;
         this.lastUpdate = new Date().getTime();
     }
+
+    resultString() {
+        return (typeof this.result == "string") ? this.result : this.result.join("\n");
+    }
 }
 
 decorate(Cell, {

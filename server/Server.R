@@ -9,8 +9,11 @@ options(max.print = 10)
 notebook <- ReactiveNotebook$new()
 
 formatCell <- function(cell) {
-  if(class(cell$result) %in% c("md", "html")) {
+  if(class(cell$result) %in% c("md", "html", "latex")) {
     res <- paste0(cell$result, collapse = "\n")
+  }
+  else if(class(cell$result) == "matrix") {
+    res <- cell$result
   }
   else if(class(cell) == "view") {
     res <- paste0(attr(cell$result, "view"), collapse = "\n")

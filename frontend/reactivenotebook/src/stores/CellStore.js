@@ -40,6 +40,7 @@ class CellStore {
     runCell(cell) {
         if(cell.value == "") {
             this.deleteCell(cell);
+            return;
         }
         const payload = {
             type: 'update',
@@ -62,7 +63,7 @@ class CellStore {
             cell.id = change.id[0];
             cell.RClass = change.RClass[0];
             cell.name = change.name[0];
-            cell.result = change.result[0];
+            cell.result = change.result;
             cell.hasImage = change.hasImage[0];
 
             this.addCell(cell);
@@ -78,8 +79,8 @@ class CellStore {
                   return d.id == changeset.id[0];
               });
 
-              cell[0].error = changeset.error[0];
-              cell[0].result = "";
+              cell[0].error = changeset.error;
+              cell[0].result = [""];
               cell[0].RClass = "";
               cell[0].lastUpdate = new Date().getTime();
               cell[0].hasImage = false;
@@ -93,13 +94,14 @@ class CellStore {
                   });
 
                   console.log("Change", change);
-
-                  cell[0].result = change.result[0]; 
-                  cell[0].lastUpdate = new Date().getTime();
-                  cell[0].hasImage = change.hasImage[0];
-                  cell[0].RClass = change.RClass[0];
-                  cell[0].name = change.name[0];
-                  cell[0].error = "";
+                  if(change != undefined) {
+                    cell[0].result = change.result; 
+                    cell[0].lastUpdate = new Date().getTime();
+                    cell[0].hasImage = change.hasImage[0];
+                    cell[0].RClass = change.RClass[0];
+                    cell[0].name = change.name[0];
+                    cell[0].error = "";
+                  }
               }
           }
         }
