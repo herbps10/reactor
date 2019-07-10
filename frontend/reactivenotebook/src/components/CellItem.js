@@ -19,7 +19,7 @@ const CellItem = observer(class CellItem extends React.Component {
 
         this.instance = null;
 
-        this.state = { active: true };
+        this.state = { active: false };
 
         this.containerRef = React.createRef();
         this.resultRef = React.createRef();

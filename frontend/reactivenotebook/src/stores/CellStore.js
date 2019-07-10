@@ -60,8 +60,10 @@ class CellStore {
             
             const cell = new Cell(change.value[0], "");
             cell.id = change.id[0];
+            cell.RClass = change.RClass[0];
             cell.name = change.name[0];
             cell.result = change.result[0];
+            cell.hasImage = change.hasImage[0];
 
             this.addCell(cell);
           }

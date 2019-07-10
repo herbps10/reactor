@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 .App {
-  margin: 25px 0px;
+  margin: 25px auto;
   font-family: "Open Sans";
 }
 
