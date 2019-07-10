@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt, faGripLines } from '@fortawesome/free-solid-svg-icons';
 import RMatrix from "../renderers/RMatrix.js";
 import RImage from "../renderers/RImage.js";
+import RMd from '../renderers/RMd.js';
 import AddCellButton from './AddCellButton.js';
 import styles from "./CellItem.module.css";
 import Cell from '../stores/Cell.js';
@@ -129,9 +130,7 @@ const CellItem = observer(class CellItem extends React.Component {
         if (this.props.cell.hasImage) return null;
 
         if (this.props.cell.RClass === "md" && this.props.cell.result.length > 0)
-            return <ReactMarkdown source = { this.props.cell.resultString() }
-        escapeHtml = { false }
-        />;
+            return <RMd cell={this.props.cell} />;
 
         if (this.props.cell.RClass === "html")
             return this.renderHTML();
