@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
 .App {
-  margin: 20px auto;
-  max-width: 960px;
+  margin: 25px 0px;
+  font-family: "Open Sans";
 }
 
 .CodeMirror {

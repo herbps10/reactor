@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import CodeMirror from 'react-codemirror';
 import { observer } from 'mobx-react';
 import { Draggable } from 'react-beautiful-dnd';
 import ReactMarkdown from 'react-markdown';
@@ -19,11 +19,12 @@ const CellItem = observer(class CellItem extends React.Component {
 
         this.instance = null;
 
-        this.state = { active: true, value: this.props.cell.value };
+        this.state = { active: true };
 
         this.containerRef = React.createRef();
         this.resultRef = React.createRef();
         this.codeMirrorRef = React.createRef();
+        this.activateRef = React.createRef();
         
         this.addCellBefore = this.addCellBefore.bind(this);
         this.addCellAfter = this.addCellAfter.bind(this);
@@ -32,11 +33,13 @@ const CellItem = observer(class CellItem extends React.Component {
         this.run = this.run.bind(this);
         this.onKeyUp = this.onKeyUp.bind(this);
         this.onClick = this.onClick.bind(this);
+        this.onDocumentClick = this.onDocumentClick.bind(this);
         this.onUpdateCell = this.onUpdateCell.bind(this);
 
         this.codeMirrorOptions = {
             viewportMargin: Infinity,
             lineNumbers: true,
+            lineWrapping: true,
             mode: 'r',
             theme: 'idea',
             extraKeys: {
@@ -46,26 +49,23 @@ const CellItem = observer(class CellItem extends React.Component {
     }
 
     componentWillMount() {
-        document.addEventListener('mousedown', this.onClick, false);
+        document.addEventListener('mousedown', this.onDocumentClick, false);
     }
 
     componentDidMount() {
         this.containerRef.current.addEventListener('update-cell', this.onUpdateCell, false);
+        this.codeMirrorRef.current.focus();
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.onClick, false);
+        document.removeEventListener('mousedown', this.onDocumentClick, false);
         this.containerRef.current.addEventListener('update-cell', this.onUpdateCell);
     }
 
     componentDidUpdate(prevProps, prevState) {
       if(prevState.active == false && this.state.active == true) {
-        if(this.instance != null) {
-          this.instance.focus();
-          //const cm = this.resultRef.current.getCodeMirror();
-          //cm.focus();
-          //cm.setCursor(cm.lineCount(), 0);
-          //this.resultRef.current.getCodeMirror().doc.focus();
+        if(this.codeMirrorRef.current != null) {
+          this.codeMirrorRef.current.getCodeMirror().display.input.textarea.focus();
         }
       }
     }
@@ -74,20 +74,23 @@ const CellItem = observer(class CellItem extends React.Component {
       console.log(e);
     }
 
+    onDocumentClick(e) {
+      //if(e.target.isEqualNode(this.activateRef.current)) return;
+      //if(!this.containerRef.current.contains(e.target)) this.setState({ active: false });
+    }
+
     onClick(e) {
-        if(this.containerRef.current.contains(e.target)) {
-          this.setState({ active: true });
-        }
-        else {
-          this.setState({ active: false });
-        }
+      console.log(this.state.active);
+      this.setState({ active: !this.state.active });
     }
 
     addCellAfter() {
+        this.setState({ active: false });
         this.props.store.addCellAfter(this.props.cell, new Cell("", ""));
     }
 
     addCellBefore() {
+        this.setState({ active: false });
         this.props.store.addCellBefore(this.props.cell, new Cell("", ""));
     }
 
@@ -95,7 +98,7 @@ const CellItem = observer(class CellItem extends React.Component {
         this.props.store.deleteCell(this.props.cell);
     }
 
-    update(editor, data, newValue) {
+    update(newValue) {
         this.props.cell.value = newValue;
     }
 
@@ -120,7 +123,7 @@ const CellItem = observer(class CellItem extends React.Component {
         if(this.props.cell.hasImage) return null;
 
         if(this.props.cell.RClass === "md" && this.props.cell.result.length > 0)
-            return <ReactMarkdown source={this.props.cell.result} />;
+            return <ReactMarkdown source={this.props.cell.result} escapeHtml={false} />;
 
         if(this.props.cell.RClass === "html")
             return this.renderHTML();
@@ -135,7 +138,7 @@ const CellItem = observer(class CellItem extends React.Component {
           : this.props.cell.name + ": " + this.props.cell.result;
 
         if(this.resultRef.current != null) {
-          //this.resultRef.current.getCodeMirror().doc.setValue(value);
+          this.resultRef.current.getCodeMirror().doc.setValue(value);
         }
 
         return (
@@ -164,14 +167,12 @@ const CellItem = observer(class CellItem extends React.Component {
                 <div className={cellClasses}
                   ref={provided.innerRef}
                   {...provided.draggableProps}
-                  onClick={this.onClick}
                 >
-                    <AddCellButton onClick={this.addCellBefore} className={[styles.addCellBefore, styles.addCell, styles.buttonColor].join(' ')} />
+                    <div className={styles.activate} onClick={this.onClick} ref={this.activateRef} />
                     <div className={styles.columns}>
-                        <div className={styles.actions}>
+                      <AddCellButton onClick={this.addCellBefore} className={[styles.addCellBefore, styles.addCell, styles.buttonColor].join(' ')} />
+                        <div className={styles.grip}>
                             <a className={styles.gripHandle} {...provided.dragHandleProps}></a>
-                            <button onClick={this.run} className={styles.buttonColor}><FontAwesomeIcon icon={faPlay} /></button>
-                            <button onClick={this.delete} className={styles.buttonColor}><FontAwesomeIcon icon={faTrashAlt} /></button>
                         </div>
 
                         <div className={styles.editor}>
@@ -180,17 +181,22 @@ const CellItem = observer(class CellItem extends React.Component {
                                 value={this.props.cell.value}
                                 onChange={this.update}
                                 options={this.codeMirrorOptions}
-                                ref={this.codeMirrorRef}
-                                editorDidMount={editor => { this.instance = editor }}/>
+                                ref={this.codeMirrorRef} />
 
                             <div className={styles.result}>
                                 {error}
                                 {result}
                                 {image}
                             </div>
+
+                            <div className={styles.actions}>
+                                <button onClick={this.run} className={styles.buttonColor}><FontAwesomeIcon icon={faPlay} /></button>
+                                <button onClick={this.delete} className={styles.buttonColor}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                            </div>
                         </div>
+                        <AddCellButton onClick={this.addCellAfter} className={[styles.addCellAfter, styles.addCell, styles.buttonColor].join(' ')} />
                     </div>
-                    <AddCellButton onClick={this.addCellAfter} className={[styles.addCellAfter, styles.addCell, styles.buttonColor].join(' ')} />
+                    <div className={styles.spacer} />
                 </div>
               )}
             </Draggable>

@@ -31,12 +31,15 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       eval(parse(text = code), private$env)
     },
     delete_cell = function(cell) {
-      if(!is.null(self$cells[[cell$id]]$name != "")) {
+      if(!is.null(self$cells[[cell$id]]$name)) {
         self$run_in_env(paste0("rm(", self$cells[[cell$id]]$name, ")"))
         self$run_in_env(paste0("rm(", self$cells[[cell$id]]$name, "_saved)"))
       }
       self$cells[[cell$id]] <- NULL
-      private$graph <- delete.vertices(private$graph, V(private$graph)[[cell$id]])
+      
+      if(cell$id %in% names(V(private$graph))) {
+        private$graph <- delete.vertices(private$graph, V(private$graph)[[cell$id]])
+      }
     },
     run_cell = function(cell, update = TRUE) {
       private$callstack = c()

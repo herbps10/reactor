@@ -45,6 +45,7 @@ class CellStore {
             type: 'update',
             cell: cell
         }
+        console.log(payload);
         this.webSocketService.sendMessage(JSON.stringify(payload));
     }
 
