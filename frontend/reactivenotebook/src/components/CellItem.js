@@ -8,6 +8,7 @@ import { BlockMath } from 'react-katex';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt, faGripLines } from '@fortawesome/free-solid-svg-icons';
 import RMatrix from "../renderers/RMatrix.js";
+import RImage from "../renderers/RImage.js";
 import AddCellButton from './AddCellButton.js';
 import styles from "./CellItem.module.css";
 import Cell from '../stores/Cell.js';
@@ -181,14 +182,7 @@ const CellItem = observer(class CellItem extends React.Component {
 
   render() {
     const image = this.props.cell.hasImage ? (
-      <Resizable
-        className={styles.resizable}
-        lockAspectRatio={true}>
-        <img
-          src={`http://localhost:5000/static/${this.props.cell.id}.svg?${this.props.cell.lastUpdate}`}
-          onLoad={this.onImageLoad}
-          className={styles.image} />
-      </Resizable>
+      <RImage cell={this.props.cell} onImageLoad={this.onImageLoad} />
     ) : null;
 
     const result = this.resultView();

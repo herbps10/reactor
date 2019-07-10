@@ -140,16 +140,3 @@
     width: 100%;
 }
 
-.image {
-    height: 100%;
-    width: auto;
-}
-
-.resizable {
-    border: 1px solid white;
-    margin: 2px;
-}
-
-.resizable:hover {
-    border: 1px dashed #ccc;
-}
