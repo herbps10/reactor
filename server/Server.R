@@ -28,6 +28,7 @@ formatCell <- function(cell) {
     value = cell$value,
     RClass = class(cell$result),
     name = cell$name,
+    position = cell$position,
     #hasImage = FALSE
     hasImage = cell$hasImage
   )
@@ -38,7 +39,12 @@ server <- startServer(
   port = 5000,
   app = list(
     onWSOpen = function(ws) {
-      ws$send(toJSON(list(cells = map(notebook$cells, formatCell))))
+      if(length(notebook$cells) > 0) {
+        ws$send(toJSON(list(cells = map(notebook$cells, formatCell)[order(unlist(lapply(notebook$cells, "[", "position")), decreasing = FALSE)])))
+      }
+      else {
+        ws$send(toJSON(list(cells = c())))
+      }
       
       ws$onMessage(function(binary, contents) {
         payload = fromJSON(contents)
@@ -66,6 +72,9 @@ server <- startServer(
           cell <- payload$cell
           
           notebook$delete_cell(cell)
+        }
+        else if(payload$type == "move") {
+          notebook$move(payload$source, payload$destination)
         }
         
         if(!is.null(result)) {

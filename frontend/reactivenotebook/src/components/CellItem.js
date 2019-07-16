@@ -1,9 +1,7 @@
 import React from 'react';
 import CodeMirror from 'react-codemirror';
-import { Resizable } from 're-resizable';
 import { observer } from 'mobx-react';
 import { Draggable } from 'react-beautiful-dnd';
-import ReactMarkdown from 'react-markdown';
 import { BlockMath } from 'react-katex';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt, faGripLines } from '@fortawesome/free-solid-svg-icons';
@@ -69,7 +67,7 @@ const CellItem = observer(class CellItem extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.active == false && this.state.active == true) {
+        if (prevState.active === false && this.state.active === true) {
             if (this.codeMirrorRef.current != null) {
                 this.codeMirrorRef.current.getCodeMirror().display.input.textarea.focus();
             }
@@ -113,7 +111,7 @@ const CellItem = observer(class CellItem extends React.Component {
     }
 
     onKeyUp(e) {
-        if (e.keyCode == 13 && e.shiftKey) {
+        if (e.keyCode === 13 && e.shiftKey) {
             this.run();
             e.preventDefault();
             e.stopPropagation();
@@ -140,11 +138,11 @@ const CellItem = observer(class CellItem extends React.Component {
                 { __html: this.props.cell.resultString() } }
         />
 
-        if (this.props.cell.RClass == "matrix") {
-            return <RMatrix data = {this.props.cell.result} />;
+        if (this.props.cell.RClass === "matrix") {
+            return <RMatrix cell={this.props.cell} />;
     }
 
-    if (this.props.cell.RClass == "latex") {
+    if (this.props.cell.RClass === "latex") {
       return <BlockMath math={this.props.cell.resultString()} />;
     }
 
@@ -156,14 +154,14 @@ const CellItem = observer(class CellItem extends React.Component {
     };
 
     let value = "";
-    if (this.props.cell.RClass == "function") {
+    if (this.props.cell.RClass === "function") {
       const f = this.props.cell.result[0].replace(/{$/, "");
-      value = (this.props.cell.name == "" || this.props.cell.name == undefined) ?
+      value = (this.props.cell.name === "" || this.props.cell.name === undefined) ?
         f
         : this.props.cell.name + ": " + f;
     }
     else {
-      value = (this.props.cell.name == "" || this.props.cell.name == undefined) ?
+      value = (this.props.cell.name === "" || this.props.cell.name === undefined) ?
         this.props.cell.resultString()
         : this.props.cell.name + ": " + this.props.cell.resultString();
     }
@@ -181,11 +179,11 @@ const CellItem = observer(class CellItem extends React.Component {
 
   render() {
     const image = this.props.cell.hasImage ? (
-      <RImage cell={this.props.cell} onImageLoad={this.onImageLoad} />
+      <RImage cell={this.props.cell} onImageLoad={this.onImageLoad} lastUpdate={this.props.cell.lastUpdate} />
     ) : null;
 
     const result = this.resultView();
-    const error = this.props.cell.error == "" ? null : (
+    const error = this.props.cell.error === "" ? null : (
       <div className={styles.error}>{this.props.cell.error}</div>
     );
 

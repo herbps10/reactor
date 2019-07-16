@@ -1,4 +1,7 @@
+import {observable, decorate} from 'mobx';
+
 class WebSocketService {
+    connected = false;
     constructor() {
         this.socket = new WebSocket("ws://localhost:5000");    
 
@@ -8,6 +11,7 @@ class WebSocketService {
         this.socket.addEventListener('open', this.onOpen);
     }
     onOpen() {
+        this.connected = true;
     }
     sendMessage(message) {
         this.socket.send(message);
@@ -16,5 +20,7 @@ class WebSocketService {
         this.socket.addEventListener('message', f);
     }
 }
+
+decorate(WebSocketService, { connected: observable });
 
 export default WebSocketService;

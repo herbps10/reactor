@@ -2,6 +2,7 @@ import React from 'react';
 import CellList from './components/CellList.js';
 import { observer } from 'mobx-react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import Header from './components/Header.js';
 import './App.css';
 
 const App = observer(class App extends React.Component {
@@ -12,11 +13,11 @@ const App = observer(class App extends React.Component {
 
   onDragEnd(result) {
     if(
-      result.source != null && result.destination != null &&
-      result.source.index != result.destination.index
+      result.source !== null && result.destination !== null &&
+      result.source.index !== result.destination.index
     ) {
       console.log(result.source.index, result.destination.index);
-      this.props.store.swap(result.source.index, result.destination.index);
+      this.props.store.move(result.source.index, result.destination.index);
     }
   }
 
@@ -25,8 +26,9 @@ const App = observer(class App extends React.Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <div className="App">
           <header className="App-header">
-            <CellList store={this.props.store} />
+            <Header connected={this.props.store.webSocketService.connected} />
           </header>
+          <CellList store={this.props.store} />
         </div>
      </DragDropContext>
     );

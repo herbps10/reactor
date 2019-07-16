@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Cell from './stores/Cell.js';
 import CellStore from './stores/CellStore.js';
 import WebSocketService from './WebSocketService.js';
 

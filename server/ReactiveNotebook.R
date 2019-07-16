@@ -35,12 +35,36 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
     run_in_env = function(code) {
       eval(parse(text = code), private$env)
     },
+    move = function(source, destination) {
+      self$cells <- map(self$cells, function(cell) {
+        if(cell$position == source) cell$position <- destination
+        cell
+      })
+      
+      cell_ranks <- rank(unlist(lapply(self$cells, '[', 'position')))
+      
+      i <- 1
+      for(id in names(self$cells)) {
+        self$cells[[id]]$position <- cell_ranks[i]
+        i <- i + 1
+      }
+      cell_ranks
+    },
     delete_cell = function(cell) {
+      if(is.null(self$cells[[cell$id]])) return()
       if(!is.null(self$cells[[cell$id]]$name)) {
         self$run_in_env(paste0("rm(", self$cells[[cell$id]]$name, ")"))
         self$run_in_env(paste0("rm(", self$cells[[cell$id]]$name, "_saved)"))
       }
+      
+      position <- self$cells[[cell$id]]$position
+      
       self$cells[[cell$id]] <- NULL
+      
+      self$cells <- map(self$cells, function(cell) {
+        if(cell$position > position) cell$position <- cell$position - 1
+        cell
+      })
       
       if(cell$id %in% names(V(private$graph))) {
         private$graph <- delete.vertices(private$graph, V(private$graph)[[cell$id]])
@@ -80,7 +104,29 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       }
       hasImage = !is.null(p[[1]]) || !is.null(p2)
       
-      self$cells[[cell$id]] = list(id = cell$id, value = cell$value, hasImage = hasImage, name = name, result = res);
+      pos <- cell$position
+      if(is.null(pos) && length(self$cells) > 0) {
+        positions <- sapply(self$cells, `[[`, "position")
+        pos <- max(positions) + 1
+      }
+      else if(is.null(pos)){
+        pos <- 1
+      }
+      
+      self$cells <- map(self$cells, function(cell) {
+        if(cell$position >= pos) cell$position <- cell$position + 1
+        cell
+      })
+      
+      self$cells[[cell$id]] = list(
+        id = cell$id,
+        value = cell$value,
+        position = pos,
+        hasImage = hasImage,
+        name = name,
+        result = res
+      );
+      
       
       if(!is.null(name)) {
         private$name_to_id[name] = cell$id
@@ -116,7 +162,8 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       updates
     },
     data_frame = function() {
-      bind_rows(self$cells)
+      bind_rows(lapply(self$cells, "[", c("id", "value", "position", "hasImage"))) %>%
+        arrange(position)
     },
     getGraph = function() {
       return(private$graph)
@@ -143,9 +190,14 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
 )
 
 nb <- ReactiveNotebook$new()
-nb$run_cell(list(id = "start", value = "start <- 3"))
-nb$run_cell(list(id = "x", value = "x <- seq(start, 10, 0.1)"))
-nb$run_cell(list(id = "y", value = "y <- sin(x)"))
+nb$run_cell(list(id = "start", value = "start <- 3", position = 1))
+nb$run_cell(list(id = "x", value = "x <- seq(start, 10, 0.1)", position = 2))
+
+nb$data_frame()
+
+nb$move(2, 0.5)
+
+nb$data_frame()
 #
 #nb$delete_cell(list(id = "y"))
 #nb$data_frame()
