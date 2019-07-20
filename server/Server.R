@@ -15,7 +15,7 @@ formatCell <- function(cell) {
   else if(class(cell$result) == "matrix") {
     res <- cell$result
   }
-  else if(class(cell) == "view") {
+  else if(class(cell$result) == "view") {
     res <- paste0(attr(cell$result, "view"), collapse = "\n")
   }
   else {
@@ -75,6 +75,17 @@ server <- startServer(
         }
         else if(payload$type == "move") {
           notebook$move(payload$source, payload$destination)
+        }
+        else if(payload$type == "updateView") {
+          print(payload)
+          changeset <- notebook$viewUpdate(payload$cell, payload$value)
+          
+          if(!("error" %in% class(changeset))) {
+            result <- map(changeset, function(id) formatCell(notebook$cells[[id]]))
+          }
+          else {
+            result <- list(id = cell$id, error = toString(changeset))
+          }
         }
         
         if(!is.null(result)) {

@@ -22,17 +22,17 @@ class RMatrix extends React.Component {
         const data = this.props.cell.result;
         const rowLabelClasses = [styles.label, styles.rowLabel].join(' ');
         const Cell = function({ columnIndex, rowIndex, style }) {
-            if(columnIndex == 0 && rowIndex == 0) {
+            if(columnIndex === 0 && rowIndex === 0) {
                 return <div style={style} className={styles.label}></div>;
             }
-            else if(columnIndex == 0) {
+            else if(columnIndex === 0) {
                 return (
                     <div style={style} className={rowLabelClasses}>
                         <span>{rowIndex}</span>
                     </div>
                 );
             }
-            else if(rowIndex == 0) {
+            else if(rowIndex === 0) {
                 return (
                     <div style={style} className={styles.label}>
                         <span>{columnIndex}</span>

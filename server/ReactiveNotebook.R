@@ -19,14 +19,27 @@ html <- function(text) {
   text
 }
 
-slider <- function() {
+slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), title = "") {
   view <- 1
   class(view) <- "view"
-  attr(view, 'view') <- "<input type='range' />"
+  attr(view, 'view') <- glue::glue("
+  <div>
+    <strong><<title>></strong>
+    <input type='range'
+      min=<<min>>
+      max=<<max>>
+      step=<<step>>
+      value=<<value>>
+      oninput='this.nextElementSibling.innerHTML = this.value'
+      onchange='window.range = this; var event = new CustomEvent(\"update-cell\", { bubbles: true, detail: this.value }); this.dispatchEvent(event);'
+      />
+    <span><<value>></span>
+  </div>", .open = "<<", .close = ">>")
   view
 }
 
 ReactiveNotebook <- R6Class("ReactiveNotebook",
+                            git
   public = list(
     cells = list(),
     initialize = function() {
@@ -143,22 +156,32 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
         }
       }
       
-      
       if(is.null(res)) res <- ""
       updates = c(cell$id)
       
       if(update == TRUE) {
-        # Get dependencies
-        ego_graph <- make_ego_graph(self$getGraph(), order = 1000, nodes = cell$id, mindist = 0, mode = "in")[[1]]
-        
-        # Sort dependencies to topological order
-        dependencies <- names(topo_sort(ego_graph, mode = "in")[-1])
-        
-        for(dependency in dependencies) {
-          updates <- c(updates, self$run_cell(self$cells[[dependency]], update = FALSE))
-        }
+        updates <- c(updates, self$propogate_updates(cell))
       }
       
+      updates
+    },
+    viewUpdate = function(cell, value) {
+      self$run_in_env(str_c(cell$name, "_saved[1] = ", value))
+      
+      updates <- self$propogate_updates(cell)
+      updates
+    },
+    propogate_updates = function(cell) {
+      # Get dependencies
+      updates <- c()
+      ego_graph <- make_ego_graph(self$getGraph(), order = 1000, nodes = cell$id, mindist = 0, mode = "in")[[1]]
+      
+      # Sort dependencies to topological order
+      dependencies <- names(topo_sort(ego_graph, mode = "in")[-1])
+      
+      for(dependency in dependencies) {
+        updates <- c(updates, self$run_cell(self$cells[[dependency]], update = FALSE))
+      }
       updates
     },
     data_frame = function() {
@@ -190,10 +213,13 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
 )
 
 nb <- ReactiveNotebook$new()
-nb$run_cell(list(id = "start", value = "start <- 3", position = 1))
-nb$run_cell(list(id = "x", value = "x <- seq(start, 10, 0.1)", position = 2))
+nb$run_cell(list(id = "start", value = "start <- slider()", position = 1))
+nb$run_cell(list(id = "x", value = "y <- as.numeric(start)", position = 2))
 
 nb$data_frame()
+nb$run_in_env("y")
+
+nb$viewUpdate(list(id = "start", name = "start"), 3)
 
 nb$move(2, 0.5)
 

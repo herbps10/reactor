@@ -1,5 +1,5 @@
 import React from 'react';
-import CodeMirror from 'react-codemirror';
+import ReactCodeMirror from 'react-codemirror';
 import { observer } from 'mobx-react';
 import { Draggable } from 'react-beautiful-dnd';
 import { BlockMath } from 'react-katex';
@@ -11,8 +11,12 @@ import RMd from '../renderers/RMd.js';
 import AddCellButton from './AddCellButton.js';
 import styles from "./CellItem.module.css";
 import Cell from '../stores/Cell.js';
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/idea.css";
+import suggest from '../suggest.js';
+import CodeMirror from 'codemirror';
+import '../lib/show-hint.js';
+import '../lib/show-hint.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/idea.css';
 import 'katex/dist/katex.min.css';
 
 import ('codemirror/mode/r/r');
@@ -39,6 +43,7 @@ const CellItem = observer(class CellItem extends React.Component {
         this.onClick = this.onClick.bind(this);
         this.onDocumentClick = this.onDocumentClick.bind(this);
         this.onUpdateCell = this.onUpdateCell.bind(this);
+        this.autocomplete = this.autocomplete.bind(this);
 
         this.codeMirrorOptions = {
             viewportMargin: Infinity,
@@ -46,10 +51,27 @@ const CellItem = observer(class CellItem extends React.Component {
             lineWrapping: true,
             mode: 'r',
             theme: 'idea',
+            hintOptions: { 
+              hint: suggest,
+              completeSingle: false
+            },
             extraKeys: {
-                "Shift-Enter": this.run
-            }
+                "Shift-Enter": this.run,
+                "Tab": this.autocomplete
+            },
         }
+    }
+
+    autocomplete() {
+      const cm = this.codeMirrorRef.current.codeMirror;
+      const cursor = cm.getCursor(), line = cm.getLine(cursor.line);
+      console.log('line', line, line.match(/^\s+$/));
+      if(!line.match(/^\s*$/)) {
+        CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
+      }
+      else {
+        CodeMirror.commands.insertTab(cm);
+      }
     }
 
     componentWillMount() {
@@ -57,13 +79,13 @@ const CellItem = observer(class CellItem extends React.Component {
     }
 
     componentDidMount() {
-        this.containerRef.current.addEventListener('update-cell', this.onUpdateCell, false);
-        this.codeMirrorRef.current.focus();
+      this.containerRef.current.addEventListener('update-cell', this.onUpdateCell, false);
+      this.codeMirrorRef.current.focus();
     }
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.onDocumentClick, false);
-        this.containerRef.current.addEventListener('update-cell', this.onUpdateCell);
+        this.containerRef.current.removeEventListener('update-cell', this.onUpdateCell);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -75,7 +97,7 @@ const CellItem = observer(class CellItem extends React.Component {
     }
 
     onUpdateCell(e) {
-        console.log(e);
+      this.props.store.updateView(this.props.cell, e.detail);
     }
 
     onDocumentClick(e) {
@@ -172,7 +194,7 @@ const CellItem = observer(class CellItem extends React.Component {
 
     return (
       <div className={styles.resultContainer}>
-        <CodeMirror ref={this.resultRef} value={value} options={options} />
+        <ReactCodeMirror ref={this.resultRef} value={value} options={options} />
       </div>
     )
   }
@@ -206,7 +228,7 @@ const CellItem = observer(class CellItem extends React.Component {
                 </div>
 
                 <div className={styles.editor}>
-                  <CodeMirror
+                  <ReactCodeMirror
                     className={mirrorClasses}
                     value={this.props.cell.value}
                     onChange={this.update}

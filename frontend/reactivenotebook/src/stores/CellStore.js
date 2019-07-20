@@ -10,13 +10,11 @@ class CellStore {
     }
 
     move(source, destination) {
-        console.log(source, destination);
         const payload = {
             type: 'move',
             source: this.cells[source].position,
             destination: source > destination ? destination + 0.5 : destination + 2
         };
-        console.log(payload);
 
         this.cells.splice(destination, 0, this.cells.splice(source, 1)[0]);
         this.cells.forEach((cell, index) => cell.position = index + 1)
@@ -25,8 +23,8 @@ class CellStore {
     }
 
     addCell(cell) {
-        if(cell.position == undefined) {
-            if(this.cells.length == 0) {
+        if(cell.position === undefined) {
+            if(this.cells.length === 0) {
                 cell.position = 1;
             }
             else {
@@ -68,7 +66,15 @@ class CellStore {
             type: 'update',
             cell: cell
         }
-        console.log(payload);
+        this.webSocketService.sendMessage(JSON.stringify(payload));
+    }
+
+    updateView(cell, value) {
+        const payload = {
+            type: 'updateView',
+            cell: cell,
+            value: value
+        };
         this.webSocketService.sendMessage(JSON.stringify(payload));
     }
 
@@ -116,7 +122,6 @@ class CellStore {
                       return d.id === change.id[0];
                   });
 
-                  console.log("Change", change);
                   if(change !== undefined) {
                     cell[0].result = change.result; 
                     cell[0].lastUpdate = new Date().getTime();
