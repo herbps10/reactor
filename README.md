@@ -12,6 +12,7 @@ ReactiveNotebook is inspired by [Observable](http://observablehq.com), which pro
 | [Shiny](http://shiny.rstudio.com/)   | R          |           | ✔        |
 | [Observable](http://observablehq.com)| Javascript | ✔         | ✔        |
 | [Jupyter](jupyter.com)               | Various    | ✔         | For Python with [dfkernel](https://github.com/dataflownb/dfkernel/)        |
+| Spreadsheets                         | Various    | ✔          | ✔ |
 
 ## Todo list
 
