@@ -26,16 +26,18 @@ stop_reactive_notebook(server)
 ### Reactive execution
 If a cell is used to define a variable, ReactiveNotebook keeps track of all the other cells that depend on it. If you update the variable, all the dependent cells are rerun.
 
-<img src="https://thumbs.gfycat.com/HarmoniousGroundedEquestrian-size_restricted.gif" width="100%" alt="Example of reactive execution" style='box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2)' />
+<img src="https://thumbs.gfycat.com/HarmoniousGroundedEquestrian-size_restricted.gif" width="100%" alt="Example of reactive execution" />
 
 ### Interactivity
 Interactive inputs can be used to set the value of an R variable.
 
-<img src="https://thumbs.gfycat.com/ScientificConcernedInvisiblerail-size_restricted.gif" width="100%" alt="Example of reactive execution" style='box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2)' />
+<img src="https://thumbs.gfycat.com/ScientificConcernedInvisiblerail-size_restricted.gif" width="100%" alt="Example of interactive inputs" />
 
 
 ### Widgets
 Any R variable with the class "htmlwidget" will be rendered as HTML. 
+
+<img src="https://thumbs.gfycat.com/GrizzledSlowLacewing-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets" />
 
 ## Comparison to existing tools
 
