@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faTrashAlt, faGripLines } from '@fortawesome/free-solid-svg-icons';
 import RMatrix from "../renderers/RMatrix.js";
 import RImage from "../renderers/RImage.js";
+import RHtmlWidget from '../renderers/RHtmlWidget.js';
 import RMd from '../renderers/RMd.js';
 import AddCellButton from './AddCellButton.js';
 import styles from "./CellItem.module.css";
@@ -149,22 +150,25 @@ const CellItem = observer(class CellItem extends React.Component {
     resultView() {
         if (this.props.cell.hasImage) return null;
 
-        if (this.props.cell.RClass === "md" && this.props.cell.result.length > 0)
+        if (this.props.cell.RClass.includes("md") && this.props.cell.result.length > 0)
             return <RMd cell={this.props.cell} />;
 
-        if (this.props.cell.RClass === "html")
+        if (this.props.cell.RClass.includes("html"))
             return this.renderHTML();
 
-        if (this.props.cell.RClass === "view")
+        if(this.props.cell.RClass.includes("htmlwidget"))
+          return <RHtmlWidget cell={this.props.cell} />
+
+        if (this.props.cell.RClass.includes("view"))
             return <div dangerouslySetInnerHTML = {
                 { __html: this.props.cell.resultString() } }
         />
 
-        if (this.props.cell.RClass === "matrix") {
+        if (this.props.cell.RClass.includes("matrix")) {
             return <RMatrix cell={this.props.cell} />;
     }
 
-    if (this.props.cell.RClass === "latex") {
+    if (this.props.cell.RClass.includes("latex")) {
       return <BlockMath math={this.props.cell.resultString()} />;
     }
 
@@ -176,7 +180,7 @@ const CellItem = observer(class CellItem extends React.Component {
     };
 
     let value = "";
-    if (this.props.cell.RClass === "function") {
+    if (this.props.cell.RClass.includes("function")) {
       const f = this.props.cell.result[0].replace(/{$/, "");
       value = (this.props.cell.name === "" || this.props.cell.name === undefined) ?
         f

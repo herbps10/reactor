@@ -39,7 +39,6 @@ slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), titl
 }
 
 ReactiveNotebook <- R6Class("ReactiveNotebook",
-                            git
   public = list(
     cells = list(),
     initialize = function() {
@@ -106,6 +105,11 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       }
       else {
         res <- eval(parse(text = cell$value), private$env)
+      }
+      
+      if("htmlwidget" %in% class(res)) {
+        htmlPath = paste0(file.path(staticDir, cell$id), ".html")
+        htmlwidgets::saveWidget(res, htmlPath, selfcontained = TRUE)
       }
       
       #p <- eval(parse(text = "recordPlot()"), private$env)
@@ -195,6 +199,12 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       for(cell in self$cells) {
         cat(cell, "\n", sep = "")
       }
+    },
+    export = function() {
+      topo <- topo_sort(private$graph, mode = "in")
+      res <- lapply(self$cells[topo], `[[`, "value") %>% str_c(collapse = "\n")
+      
+      res
     }
   ),
   private = list(

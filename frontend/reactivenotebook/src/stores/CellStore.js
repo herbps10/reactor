@@ -89,7 +89,7 @@ class CellStore {
             
             const cell = new Cell(change.value[0], "");
             cell.id = change.id[0];
-            cell.RClass = change.RClass[0];
+            cell.RClass = change.RClass;
             cell.name = change.name[0];
             cell.result = change.result;
             cell.hasImage = change.hasImage[0];
@@ -110,7 +110,7 @@ class CellStore {
 
               cell[0].error = changeset.error;
               cell[0].result = [""];
-              cell[0].RClass = "";
+              cell[0].RClass = [];
               cell[0].lastUpdate = new Date().getTime();
               cell[0].hasImage = false;
           }
@@ -126,7 +126,7 @@ class CellStore {
                     cell[0].result = change.result; 
                     cell[0].lastUpdate = new Date().getTime();
                     cell[0].hasImage = change.hasImage[0];
-                    cell[0].RClass = change.RClass[0];
+                    cell[0].RClass = change.RClass;
                     cell[0].name = change.name[0];
                     cell[0].error = "";
                     cell[0].position = change.position[0];

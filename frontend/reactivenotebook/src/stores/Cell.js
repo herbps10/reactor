@@ -5,7 +5,7 @@ class Cell {
     value = "";
     result = "";
     error = "";
-    RClass = "";
+    RClass = [];
     name = "";
     hasImage = false;
     position = 0;
