@@ -3,46 +3,21 @@ library(igraph)
 library(tidyverse)
 library(pryr)
 
-
-md <- function(text) {
-  class(text) <- "md"
-  text
-}
-
-latex <- function(text) {
-  class(text) <- "latex"
-  text
-}
-
-html <- function(text) {
-  class(text) <- "html"
-  text
-}
-
-slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), title = "") {
-  view <- 1
-  class(view) <- "view"
-  attr(view, 'view') <- glue::glue("
-  <div>
-    <strong><<title>></strong>
-    <input type='range'
-      min=<<min>>
-      max=<<max>>
-      step=<<step>>
-      value=<<value>>
-      oninput='this.nextElementSibling.innerHTML = this.value'
-      onchange='window.range = this; var event = new CustomEvent(\"update-cell\", { bubbles: true, detail: this.value }); this.dispatchEvent(event);'
-      />
-    <span><<value>></span>
-  </div>", .open = "<<", .close = ">>")
-  view
-}
-
+#'
+#'
+#' @import R6
+#' @import igraph
+#' @import tidyverse
+#' @import pryr
+#' 
+#' @export
 ReactiveNotebook <- R6Class("ReactiveNotebook",
   public = list(
     cells = list(),
-    initialize = function() {
+    staticDir = "",
+    initialize = function(staticDir = tempdir()) {
       private$env <- new.env()
+      self$staticDir <- staticDir
     },
     run_in_env = function(code) {
       eval(parse(text = code), private$env)
@@ -90,7 +65,7 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       
       ggplot2:::.store$set(NULL)
       
-      svgPath <- paste0(file.path(staticDir, cell$id), ".svg")
+      svgPath <- paste0(file.path(self$staticDir, cell$id), ".svg")
       svg(filename = svgPath)
       dev.control(displaylist = "enable")
       #eval(parse(text = paste0("svg('", str_replace_all(svgPath, "\\\\", "/"), "')")), private$env)
@@ -108,7 +83,7 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       }
       
       if("htmlwidget" %in% class(res)) {
-        htmlPath = paste0(file.path(staticDir, cell$id), ".html")
+        htmlPath = paste0(file.path(self$staticDir, cell$id), ".html")
         htmlwidgets::saveWidget(res, htmlPath, selfcontained = TRUE)
       }
       
@@ -202,7 +177,7 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
     },
     export = function() {
       topo <- topo_sort(private$graph, mode = "in")
-      res <- lapply(self$cells[topo], `[[`, "value") %>% str_c(collapse = "\n")
+      res <- lapply(self$cells[topo], `[[`, "value") %>% str_c(collapse = "\n\n")
       
       res
     }
@@ -221,68 +196,3 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
     }
   )
 )
-
-nb <- ReactiveNotebook$new()
-nb$run_cell(list(id = "start", value = "start <- slider()", position = 1))
-nb$run_cell(list(id = "x", value = "y <- as.numeric(start)", position = 2))
-
-nb$data_frame()
-nb$run_in_env("y")
-
-nb$viewUpdate(list(id = "start", name = "start"), 3)
-
-nb$move(2, 0.5)
-
-nb$data_frame()
-#
-#nb$delete_cell(list(id = "y"))
-#nb$data_frame()
-#nb$run_cell(list(id = "y2", value = "y2 <- cos(x)"))
-#nb$run_cell(list(id = "plot", value = "{
-#  plot(x, y, type = 'l')
-#  plot(x, y2, col = 'green')
-#}"))
-#
-#nb$run_cell(list(id = "start", value = "start <- 5"))
-#
-#nb$run_in_env("length(y)")
-#nb$run_in_env("length(y2)")
-#
-#
-#plot(nb$getGraph())
-#
-#nb <- ReactiveNotebook$new()
-#
-#nb$run_cell(list(id = "a", value = "df <- data.frame(x = 1:10, y = 1:10)"))
-#nb$run_cell(list(id = "b", value = "ggplot(df, aes(x, y)) + geom_point()"))
-#nb$run_cell(list(id = "d", value = "plot(df$x, df$y)"))
-#
-#nb$data_frame()
-
-#notebook <- ReactiveNotebook$new()
-#
-#notebook$run_cell(list(id = "a", value = "a <- 10"))
-#notebook$run_cell(list(id = "b", value = "b <- a"))
-#notebook$run_cell(list(id = "c1", value = "a"))
-#
-#notebook$run_cell(list(id = "c2", value = "plot(1:10)"))
-#notebook$data_frame()
-#
-#notebook$run_cell(list(id = "a", value = "a <- 15"))
-#
-#notebook$run_cell("b <- a")
-#
-#notebook$run_cell("a <- 15")
-#
-#notebook$run_cell("d <- a")
-#notebook$run_cell("e <- d")
-#
-#plot(notebook$getGraph())
-#
-#notebook$run_in_env("b")
-#
-#notebook$data_frame()
-#
-#node <- V(notebook$getGraph())[1]
-#
-#topo_sort(make_ego_graph(notebook$getGraph(), order = 10, nodes = "a", mindist = 0, mode = "in")[[1]], mode = "in")

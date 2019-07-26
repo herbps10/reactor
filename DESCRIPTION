@@ -1,0 +1,16 @@
+Package: ReactiveNotebook
+Title: Interactive Notebooks for R
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Herb",
+           family = "Susmann",
+           role = c("aut", "cre"),
+           email = "herbps10@gmail.com")
+Description: What the package does (one paragraph).
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
+Suggests: 
+    testthat (>= 2.1.0)
