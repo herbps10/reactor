@@ -40,7 +40,7 @@ slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), titl
   class(view) <- "view"
   attr(view, 'view') <- glue::glue("
   <div>
-    <strong><<title>></strong>
+    <strong><<title>></strong><br/>
     <input type='range'
       min=<<min>>
       max=<<max>>

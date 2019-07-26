@@ -31,6 +31,9 @@ If a cell is used to define a variable, ReactiveNotebook keeps track of all the 
 ### Interactivity
 Interactive inputs can be used to set the value of an R variable.
 
+<img src="https://thumbs.gfycat.com/ScientificConcernedInvisiblerail-size_restricted.gif" width="100%" alt="Example of reactive execution" />
+
+
 ### Widgets
 Any R variable with the class "htmlwidget" will be rendered as HTML. 
 
