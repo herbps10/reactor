@@ -5,6 +5,22 @@ _Reactive notebooks for R_
 
 Reactive notebooks are collections of cells containing R code. When you update a cell, all of the cells that reference it are automatically updated, like a spreadsheet. ReactiveNotebooks integrate R code, plots, HTML, and text into one document.
 
+```r
+devtools::install_github("herbps10/ReactiveNotebook")
+
+library(ReactiveNotebook)
+
+# Create new ReactiveNotebook
+notebook <- ReactiveNotebook$new()
+
+# Launch server at http://localhost:5000
+server <- launch_reactive_notebook(notebook)
+
+# Bring down server
+stop_reactive_notebook(server)
+
+```
+
 ## Features
 
 ### Reactive execution
