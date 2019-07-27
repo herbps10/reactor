@@ -22,6 +22,10 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
     run_in_env = function(code) {
       eval(parse(text = code), private$env)
     },
+    #'
+    #' @param source position of cell to move
+    #' @param destination at end of move cell will have position destination
+    #'
     move = function(source, destination) {
       self$cells <- map(self$cells, function(cell) {
         if(cell$position == source) cell$position <- destination
