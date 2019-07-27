@@ -25,7 +25,9 @@ formatCell <- function(cell) {
     name = cell$name,
     position = cell$position,
     #hasImage = FALSE
-    hasImage = cell$hasImage
+    hasImage = cell$hasImage,
+    viewWidth = cell$viewWidth,
+    viewHeight = cell$viewHeight
   )
 }
 
@@ -101,7 +103,6 @@ launch_reactive_notebook <- function(notebook) {
             notebook$move(payload$source, payload$destination)
           }
           else if(payload$type == "updateView") {
-            print(payload)
             changeset <- notebook$viewUpdate(payload$cell, payload$value)
             
             if(!("error" %in% class(changeset))) {
@@ -110,6 +111,9 @@ launch_reactive_notebook <- function(notebook) {
             else {
               result <- list(id = cell$id, error = toString(changeset))
             }
+          }
+          else if(payload$type == "updateSize") {
+            notebook$updateSize(payload$cell, payload$value)
           }
           
           if(!is.null(result)) {

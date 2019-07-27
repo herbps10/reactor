@@ -120,7 +120,9 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
         position = pos,
         hasImage = hasImage,
         name = name,
-        result = res
+        result = res,
+        viewWidth = NULL,
+        viewHeight = NULL
       );
       
       
@@ -154,6 +156,15 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       updates <- self$propogate_updates(cell)
       updates
     },
+    updateSize = function(cell, value) {
+      if(!is.null(value$width)) {
+        self$cells[[cell$id]]$viewWidth = c(value$width)
+      }
+      
+      if(!is.null(value$height)) {
+        self$cells[[cell$id]]$viewHeight = c(value$height)
+      }
+    },
     propogate_updates = function(cell) {
       # Get dependencies
       updates <- c()
@@ -168,7 +179,8 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       updates
     },
     data_frame = function() {
-      bind_rows(lapply(self$cells, "[", c("id", "value", "position", "hasImage"))) %>%
+      reformat_nulls <- function(x) lapply(x, function(y) ifelse(is.null(y), "", y))
+      bind_rows(lapply(lapply(self$cells, "[", c("id", "value", "position", "hasImage", "viewWidth", "viewHeight")), reformat_nulls)) %>%
         arrange(position)
     },
     getGraph = function() {
