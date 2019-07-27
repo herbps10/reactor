@@ -1,7 +1,7 @@
 # ReactiveNotebook
 _Reactive notebooks for R_
 
-**This is experimental software**
+**This is experimental software**. That means there are bugs, and the API is liable to change without maintaining backwards compatibility. Use at your own risk.
 
 Reactive notebooks are collections of cells containing R code. When you update a cell, all of the cells that reference it are automatically updated, like a spreadsheet. ReactiveNotebooks integrate R code, plots, HTML, and text into one document.
 
