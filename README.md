@@ -35,7 +35,7 @@ If a cell is used to define a variable, ReactiveNotebook keeps track of all the 
 ### Interactivity
 Interactive inputs can be used to set the value of an R variable.
 
-<img src="https://thumbs.gfycat.com/ScientificConcernedInvisiblerail-size_restricted.gif" width="100%" alt="Example of interactive inputs" />
+<img src="https://thumbs.gfycat.com/SickCircularLeonberger-size_restricted.gif" width="100%" alt="Example of interactive inputs" />
 
 ## Plotting
 ReactiveNotebook support base plots and ggplot2.
