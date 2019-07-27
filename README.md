@@ -33,6 +33,10 @@ Interactive inputs can be used to set the value of an R variable.
 
 <img src="https://thumbs.gfycat.com/ScientificConcernedInvisiblerail-size_restricted.gif" width="100%" alt="Example of interactive inputs" />
 
+## Plotting
+ReactiveNotebook support base plots and ggplot2.
+
+<img src="https://thumbs.gfycat.com/NegativeCooperativeHuia-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets" />
 
 ### Widgets
 Any R variable with the class "htmlwidget" will be rendered as HTML. 
