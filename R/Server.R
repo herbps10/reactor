@@ -1,6 +1,3 @@
-library(httpuv)
-library(jsonlite)
-
 options(max.print = 10)
 
 formatCell <- function(cell) {
@@ -27,7 +24,8 @@ formatCell <- function(cell) {
     #hasImage = FALSE
     hasImage = cell$hasImage,
     viewWidth = cell$viewWidth,
-    viewHeight = cell$viewHeight
+    viewHeight = cell$viewHeight,
+    open = cell$open
   )
 }
 
@@ -35,11 +33,13 @@ formatCell <- function(cell) {
 #' Launches a ReactiveNotebook server
 #' 
 #' @param notebook notebook to edit
-#'
+#' 
+#' @importFrom httpuv startServer staticPathOptions
+#' @importFrom jsonlite fromJSON toJSON
+#' 
 #' @export
 #'
 launch_reactive_notebook <- function(notebook) {
-  index <- read_file("inst/frontend/index.html")
   server <- startServer(
     host = "0.0.0.0",
     port = 5000,
@@ -112,6 +112,11 @@ launch_reactive_notebook <- function(notebook) {
               result <- list(id = cell$id, error = toString(changeset))
             }
           }
+          else if(payload$type == "updateOpen") {
+            if(!is.null(notebook$cells[[payload$cell$id]])) {
+              notebook$updateOpen(payload$cell, payload$value)
+            }
+          }
           else if(payload$type == "updateSize") {
             notebook$updateSize(payload$cell, payload$value)
           }
@@ -134,6 +139,9 @@ launch_reactive_notebook <- function(notebook) {
 #' Stops a ReactiveNotebook server
 #' 
 #' @param server ReactiveNotebook server
+#' 
+#' @importFrom httpuv stopServer
+#' 
 #' @export
 #' 
 stop_reactive_notebook <- function(server) {

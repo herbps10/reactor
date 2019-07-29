@@ -88,3 +88,16 @@ test_that("updating view size works", {
   expect_equal(nb$data_frame()$viewWidth, 0.25)
   expect_equal(nb$data_frame()$viewHeight, 0.25)
 })
+
+test_that("updating cell open status works", {
+  nb <- ReactiveNotebook$new()
+  
+  nb$run_cell(list(id = "a", value = "plot(1:10)", position = 1))
+  expect_equal(nb$cells$a$open, FALSE)
+  
+  nb$updateOpen(list(id = "a"), list(open = TRUE))
+  expect_equal(nb$cells$a$open, TRUE)
+  
+  nb$updateOpen(list(id = "a"), list(open = FALSE))
+  expect_equal(nb$cells$a$open, FALSE)
+})
