@@ -24,10 +24,10 @@ library(Reactor)
 notebook <- ReactorNotebook$new()
 
 # Launch server at http://localhost:5000
-server <- launch_reactor_notebook(notebook)
+server <- start_reactor(notebook)
 
 # Bring down server
-stop_reactor_notebook(server)
+stop_reactor(server)
 
 ```
 
