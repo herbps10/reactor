@@ -1,6 +1,10 @@
 # ReactiveNotebook
 _Reactive notebooks for R_
 
+<!-- badges: start -->
+  [![Travis build status](https://travis-ci.org/herbps10/ReactiveNotebook.svg?branch=master)](https://travis-ci.org/herbps10/ReactiveNotebook)
+<!-- badges: end -->
+
 **This is experimental software**. That means there are bugs, and the API is liable to change without maintaining backwards compatibility. Use at your own risk.
 
 ## What is it?
@@ -70,3 +74,4 @@ ReactiveNotebook is inspired by [Observable](http://observablehq.com), which pro
   - [ ] radiobox
   - [x] text
   - [ ] textarea
+  
