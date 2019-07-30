@@ -65,7 +65,8 @@ ReactiveNotebook is inspired by [Observable](http://observablehq.com), which pro
 - [ ] export to HTML
 - HTML inputs:
   - [x] range/slider
-  - [ ] checkbox
+  - [x] number
+  - [x] checkbox
   - [ ] radiobox
-  - [ ] text
+  - [x] text
   - [ ] textarea
