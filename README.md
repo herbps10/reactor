@@ -12,7 +12,7 @@ Reactive notebooks are collections of cells containing R code. When you update a
 
 Reactive notebooks are useful for prototyping code and exploring subjects through interactive visualizations.
 
-<img src='https://i.imgur.com/0uJKdzK.png' width='75%' />
+<img src='https://i.imgur.com/BNeLEPW.png' width='75%' />
 
 ## Getting started
 ```r
