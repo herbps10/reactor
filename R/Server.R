@@ -1,7 +1,7 @@
 options(max.print = 10)
 
 formatCell <- function(cell) {
-  if(class(cell$result) %in% c("md", "html", "latex")) {
+  if(any(class(cell$result) %in% c("md", "html", "latex"))) {
     res <- paste0(cell$result, collapse = "\n")
   }
   else if(class(cell$result) == "matrix") {
