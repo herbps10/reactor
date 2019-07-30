@@ -21,3 +21,11 @@ slider(min = 0, max = 100, step = 1, value = mean(c(min, max)),
 \description{
 Generate an HTML slider input
 }
+\examples{
+# Run this in a cell to display a number input
+input <- slider(min = 1, max = 10, step = 1, value = 5, title = "Your title")
+
+# In another cell, retrieve the value of the slider input:
+as.numeric(input)
+
+}

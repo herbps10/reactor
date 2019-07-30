@@ -81,7 +81,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/herbps10/ReactiveNotebook">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -95,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Stops a ReactiveNotebook server</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/herbps10/ReactiveNotebook/blob/master/R/Server.R'><code>R/Server.R</code></a></small>
     <div class="hidden name"><code>stop_reactive_notebook.Rd</code></div>
     </div>
 
@@ -117,12 +122,24 @@
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ReactiveNotebook</span>)
+<span class='no'>notebook</span> <span class='kw'>&lt;-</span> <span class='no'>ReactiveNotebook</span>$<span class='fu'>new</span>()
+
+<span class='no'>server</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='launch_reactive_notebook.html'>launch_reactive_notebook</a></span>(<span class='no'>notebook</span>)
+
+<span class='fu'>stop_reactive_notebook</span>(<span class='no'>server</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

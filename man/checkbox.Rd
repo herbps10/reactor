@@ -14,3 +14,11 @@ checkbox(value = FALSE, title = "")
 \description{
 Generate an HTML checkbox input
 }
+\examples{
+# Run this in a cell to display a checkbox input
+input <- checkbox(value = FALSE, title = "Your title")
+
+# In another cell, retrieve the value of the checkbox:
+as.logical(input)
+
+}

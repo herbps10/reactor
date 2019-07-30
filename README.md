@@ -8,9 +8,11 @@ _Reactive notebooks for R_
 **This is experimental software**. That means there are bugs, and the API is liable to change without maintaining backwards compatibility. Use at your own risk.
 
 ## What is it?
-Reactive notebooks are collections of cells containing R code. When you update a cell, all of the cells that reference it are automatically updated, like a spreadsheet. ReactiveNotebooks integrate R code, plots, HTML, and text into one document.
+Reactive notebooks are collections of cells containing R code. When you update a cell, all of the cells that reference it are automatically updated, like how a spreadsheet works. ReactiveNotebooks integrate R code, plots, HTML, and markdown into one document.
 
 Reactive notebooks are useful for prototyping code and exploring subjects through interactive visualizations.
+
+<img src='https://i.imgur.com/0uJKdzK.png' width='75%' />
 
 ## Getting started
 ```r
@@ -42,7 +44,7 @@ Interactive inputs can be used to set the value of an R variable.
 <img src="https://thumbs.gfycat.com/SickCircularLeonberger-size_restricted.gif" width="100%" alt="Example of interactive inputs" />
 
 ## Plotting
-ReactiveNotebook support base plots and ggplot2.
+ReactiveNotebook supports base plots and ggplot2.
 
 <img src="https://thumbs.gfycat.com/ParchedMedicalAardvark-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets" />
 

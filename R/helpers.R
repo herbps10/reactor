@@ -40,6 +40,13 @@ html <- function(text) {
 #' 
 #' @importFrom glue glue
 #' 
+#' @examples 
+#' # Run this in a cell to display a number input
+#' input <- slider(min = 1, max = 10, step = 1, value = 5, title = "Your title")
+#' 
+#' # In another cell, retrieve the value of the slider input:
+#' as.numeric(input)
+#' 
 #' @export
 #' 
 slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), title = "") {
@@ -68,6 +75,13 @@ slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), titl
 #' @param step increment
 #' @param value starting value
 #' @param title title of input
+#' 
+#' @examples 
+#' # Run this in a cell to display a number input
+#' input <- number(min = 1, max = 10, step = 1, value = 5, title = "Your title")
+#' 
+#' # In another cell, retrieve the value of the number input:
+#' as.numeric(input)
 #' 
 #' @importFrom glue glue
 #' 
@@ -98,6 +112,13 @@ number <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), titl
 #' 
 #' @importFrom glue glue
 #' 
+#' @examples 
+#' # Run this in a cell to display a checkbox input
+#' input <- checkbox(value = FALSE, title = "Your title")
+#' 
+#' # In another cell, retrieve the value of the checkbox:
+#' as.logical(input)
+#' 
 #' @export
 #' 
 checkbox <- function(value = FALSE, title = "") {
@@ -120,6 +141,13 @@ checkbox <- function(value = FALSE, title = "") {
 #'
 #' @param value initial value
 #' @param title title of input
+#' 
+#' @examples 
+#' # Run this in a cell to display a text input
+#' input <- text(value = "Default value", title = "Your title")
+#' 
+#' # In another cell, retrieve the value of the textbox:
+#' as.character(input)
 #' 
 #' @importFrom glue glue
 #' 

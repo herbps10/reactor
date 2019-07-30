@@ -12,3 +12,14 @@ stop_reactive_notebook(server)
 \description{
 Stops a ReactiveNotebook server
 }
+\examples{
+\dontrun{
+library(ReactiveNotebook)
+notebook <- ReactiveNotebook$new()
+
+server <- launch_reactive_notebook(notebook)
+
+stop_reactive_notebook(server)
+}
+
+}

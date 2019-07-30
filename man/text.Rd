@@ -14,3 +14,11 @@ text(value = "", title = "")
 \description{
 Generate an HTML text input
 }
+\examples{
+# Run this in a cell to display a text input
+input <- text(value = "Default value", title = "Your title")
+
+# In another cell, retrieve the value of the textbox:
+as.character(input)
+
+}

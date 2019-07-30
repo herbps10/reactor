@@ -34,10 +34,20 @@ formatCell <- function(cell) {
 #'
 #' Launches a ReactiveNotebook server
 #' 
-#' @param notebook notebook to edit
+#' @param notebook ReactiveNotebook to view in the web-based notebook editor
 #' 
 #' @importFrom httpuv startServer staticPathOptions
 #' @importFrom jsonlite fromJSON toJSON
+#' 
+#' @examples 
+#' \dontrun{
+#' library(ReactiveNotebook)
+#' notebook <- ReactiveNotebook$new()
+#' 
+#' server <- launch_reactive_notebook(notebook)
+#' 
+#' stop_reactive_notebook(server)
+#' }
 #' 
 #' @export
 #'
@@ -143,6 +153,16 @@ launch_reactive_notebook <- function(notebook) {
 #' @param server ReactiveNotebook server
 #' 
 #' @importFrom httpuv stopServer
+#' 
+#' @examples 
+#' \dontrun{
+#' library(ReactiveNotebook)
+#' notebook <- ReactiveNotebook$new()
+#' 
+#' server <- launch_reactive_notebook(notebook)
+#' 
+#' stop_reactive_notebook(server)
+#' }
 #' 
 #' @export
 #' 

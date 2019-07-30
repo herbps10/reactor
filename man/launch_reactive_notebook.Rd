@@ -7,8 +7,19 @@
 launch_reactive_notebook(notebook)
 }
 \arguments{
-\item{notebook}{notebook to edit}
+\item{notebook}{ReactiveNotebook to view in the web-based notebook editor}
 }
 \description{
 Launches a ReactiveNotebook server
+}
+\examples{
+\dontrun{
+library(ReactiveNotebook)
+notebook <- ReactiveNotebook$new()
+
+server <- launch_reactive_notebook(notebook)
+
+stop_reactive_notebook(server)
+}
+
 }
