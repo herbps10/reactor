@@ -1,5 +1,7 @@
 options(max.print = 10)
 
+# Format a cell ready for conversion to JSON
+# 
 formatCell <- function(cell) {
   if(any(class(cell$result) %in% c("md", "html", "latex"))) {
     res <- paste0(cell$result, collapse = "\n")
@@ -11,7 +13,7 @@ formatCell <- function(cell) {
     res <- paste0(attr(cell$result, "view"), collapse = "\n")
   }
   else {
-    res <- paste0(capture.output(cell$result), collapse = "\n")
+    res <- paste0(utils::capture.output(cell$result), collapse = "\n")
   }
   
   list(

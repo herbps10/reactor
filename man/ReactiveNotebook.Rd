@@ -8,11 +8,6 @@
 \usage{
 ReactiveNotebook
 }
-\arguments{
-\item{source}{position of cell to move}
-
-\item{destination}{at end of move cell will have position destination}
-}
 \description{
 ReactiveNotebook R6 class
 }

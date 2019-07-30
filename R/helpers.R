@@ -1,7 +1,6 @@
-#' format titles for inputs
-#' @importFrom glue glue
+# Format titles for inputs
 make_title <- function(title) {
-  ifelse(title == "", title, glue("<strong>{title}</strong><br/>"))
+  ifelse(title == "", title, glue::glue("<strong>{title}</strong><br/>"))
 }
 
 #' Mark text to be displayed as markdown

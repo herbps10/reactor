@@ -1,12 +1,13 @@
 #' ReactiveNotebook R6 class
 #'
 #' @importFrom R6 R6Class
-#' @importFrom igraph make_ego_graph topo_sort V are.connected add_vertices delete_vertices graph.empty
+#' @importFrom igraph make_ego_graph topo_sort V add_edges are.connected add_vertices delete_vertices graph.empty
 #' @importFrom htmlwidgets saveWidget
 #' @importFrom stringr str_detect str_match str_replace str_c
 #' @importFrom pryr %<a-%
 #' @importFrom ggplot2 last_plot
 #' @importFrom purrr map
+#' @importFrom dplyr bind_rows arrange
 #' 
 #' @export
 ReactiveNotebook <- R6Class("ReactiveNotebook",
@@ -17,13 +18,15 @@ ReactiveNotebook <- R6Class("ReactiveNotebook",
       private$env <- new.env()
       self$staticDir <- staticDir
     },
+    
     run_in_env = function(code) {
       eval(parse(text = code), private$env)
     },
-    #'
-    #' @param source position of cell to move
-    #' @param destination at end of move cell will have position destination
-    #'
+    
+    #
+    # source: position of cell to move
+    # destination: at end of move cell will have position destination
+    #
     move = function(source, destination) {
       self$cells <- map(self$cells, function(cell) {
         if(cell$position == source) cell$position <- destination

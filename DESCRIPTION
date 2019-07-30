@@ -1,16 +1,36 @@
 Package: ReactiveNotebook
-Title: Interactive Notebooks for R
+Title: Interactive, Reactive Notebooks for R
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Herb",
            family = "Susmann",
            role = c("aut", "cre"),
-           email = "herbps10@gmail.com")
-Description: What the package does (one paragraph).
-License: What license it uses
+           email = "herbps10@gmail.com",
+           comment = c(ORCID = "0000-0002-3540-8255"))
+Description: ReactiveNotebooks are web-based documents that combine R code, plots, interactive widgets, and markdown.
+  A notebook is made up of cells containing R code. If a cell is updated, all of the cells that depend on its value
+  are automatically rerun. The notebooks are non-linear: it automatically figures out the order in which the cells need to be run,
+  like a spreadsheet. For example, a cell could define an R variable as the output of an HTML slider, and another cell could
+  make a plot based on that value. When the user moves the slider, the plot automatically redraws itself based on the new value.
+  ReactiveNotebooks are useful for creating interactive explorations and visualisations of complex subjects.
+License: Apache License 2.0 | file LICENSE
+URL: http://herbsusmann.com/ReactiveNotebook, https://github.com/herbps10/ReactiveNotebook
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests: 
     testthat (>= 2.1.0)
+Imports: 
+    ggplot2,
+    glue,
+    htmlwidgets,
+    httpuv,
+    igraph,
+    jsonlite,
+    pryr,
+    purrr,
+    R6,
+    stringr,
+    dplyr,
+    utils
