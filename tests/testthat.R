@@ -1,4 +1,4 @@
 library(testthat)
-library(ReactiveNotebook)
+library(Reactor)
 
-test_check("ReactiveNotebook")
+test_check("ReactorNotebook")
