@@ -1,5 +1,5 @@
 test_that("saving values works", {
-  nb <- ReactiveNotebook$new()
+  nb <- ReactorNotebook$new()
   nb$run_cell(list(id = "a", value = "a <- 1", position = 1))
   nb$run_cell(list(id = "b", value = "b <- 2", position = 2))
   
@@ -8,7 +8,7 @@ test_that("saving values works", {
 })
 
 test_that("updating works", {
-  nb <- ReactiveNotebook$new()
+  nb <- ReactorNotebook$new()
   nb$run_cell(list(id = "a", value = "a <- 1", position = 1))
   nb$run_cell(list(id = "b", value = "b <- a", position = 2))
   
@@ -21,7 +21,7 @@ test_that("updating works", {
 })
 
 test_that("rearranging two cells works", {
-  nb <- ReactiveNotebook$new()
+  nb <- ReactorNotebook$new()
   
   nb$run_cell(list(id = "a", value = "a <- 1", position = 1))
   nb$run_cell(list(id = "b", value = "b <- 2", position = 2))
@@ -42,7 +42,7 @@ test_that("rearranging two cells works", {
 })
 
 test_that("rearranging three cells works", {
-  nb <- ReactiveNotebook$new()
+  nb <- ReactorNotebook$new()
   
   nb$run_cell(list(id = "a", value = "a <- 1", position = 1))
   nb$run_cell(list(id = "b", value = "b <- 2", position = 2))
@@ -72,7 +72,7 @@ test_that("rearranging three cells works", {
 })
 
 test_that("updating view size works", {
-  nb <- ReactiveNotebook$new()
+  nb <- ReactorNotebook$new()
   
   nb$run_cell(list(id = "a", value = "plot(1:10)", position = 1))
   
@@ -90,7 +90,7 @@ test_that("updating view size works", {
 })
 
 test_that("updating cell open status works", {
-  nb <- ReactiveNotebook$new()
+  nb <- ReactorNotebook$new()
   
   nb$run_cell(list(id = "a", value = "plot(1:10)", position = 1))
   expect_equal(nb$cells$a$open, FALSE)

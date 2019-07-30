@@ -32,26 +32,26 @@ formatCell <- function(cell) {
 }
 
 #'
-#' Launches a ReactiveNotebook server
+#' Starts a Reactor server
 #' 
-#' @param notebook ReactiveNotebook to view in the web-based notebook editor
+#' @param notebook ReactorNotebook to view in the web-based notebook editor
 #' 
 #' @importFrom httpuv startServer staticPathOptions
 #' @importFrom jsonlite fromJSON toJSON
 #' 
 #' @examples 
 #' \dontrun{
-#' library(ReactiveNotebook)
-#' notebook <- ReactiveNotebook$new()
+#' library(ReactorNotebook)
+#' notebook <- ReactorNotebook$new()
 #' 
-#' server <- launch_reactive_notebook(notebook)
+#' server <- start_reactor(notebook)
 #' 
-#' stop_reactive_notebook(server)
+#' stop_reactor(server)
 #' }
 #' 
 #' @export
 #'
-launch_reactive_notebook <- function(notebook) {
+start_reactor <- function(notebook) {
   server <- startServer(
     host = "0.0.0.0",
     port = 5000,
@@ -148,7 +148,7 @@ launch_reactive_notebook <- function(notebook) {
 }
 
 #'
-#' Stops a ReactiveNotebook server
+#' Stops a Reactor server
 #' 
 #' @param server ReactiveNotebook server
 #' 
@@ -156,16 +156,16 @@ launch_reactive_notebook <- function(notebook) {
 #' 
 #' @examples 
 #' \dontrun{
-#' library(ReactiveNotebook)
-#' notebook <- ReactiveNotebook$new()
+#' library(ReactorNotebook)
+#' notebook <- ReactorNotebook$new()
 #' 
-#' server <- launch_reactive_notebook(notebook)
+#' server <- start_reactor(notebook)
 #' 
-#' stop_reactive_notebook(server)
+#' stop_reactor(server)
 #' }
 #' 
 #' @export
 #' 
-stop_reactive_notebook <- function(server) {
+stop_reactor <- function(server) {
   stopServer(server)
 }

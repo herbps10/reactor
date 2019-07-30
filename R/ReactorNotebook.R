@@ -1,4 +1,4 @@
-#' ReactiveNotebook R6 class
+#' Reactor Notebook R6 class
 #'
 #' @importFrom R6 R6Class
 #' @importFrom igraph make_ego_graph topo_sort V add_edges are.connected add_vertices delete_vertices graph.empty
@@ -10,7 +10,7 @@
 #' @importFrom dplyr bind_rows arrange
 #' 
 #' @export
-ReactiveNotebook <- R6Class("ReactiveNotebook",
+ReactorNotebook <- R6Class("ReactorNotebook",
   public = list(
     cells = list(),
     staticDir = "",
