@@ -145,6 +145,10 @@ start_reactor <- function(notebook) {
       staticPathOptions = staticPathOptions(fallthrough = TRUE)
     )
   )
+  
+  utils::browseURL("http://localhost:5000")
+  
+  return(server)
 }
 
 #'
