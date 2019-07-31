@@ -140,7 +140,7 @@ start_reactor <- function(notebook) {
       },
       staticPaths = list(
         "/output" = notebook$staticDir,
-        "/" = "inst/frontend"
+        "/" = system.file(package = "Reactor", "frontend")
       ),
       staticPathOptions = staticPathOptions(fallthrough = TRUE)
     )
