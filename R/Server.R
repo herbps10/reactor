@@ -65,7 +65,30 @@ start_reactor <- function(notebook) {
               ),
               body = notebook$export()
             ))
+        }
+        else if(req$PATH_INFO == "/docs") {
+          query <- stringr::str_match(req$QUERY_STRING, "\\?query=(.+)")[,2]
+          path <- stringr::str_c(stringr::str_replace(help(query), "help", "html"), ".html")
+          
+          if(file.exists(path)) {
+            return(list(
+              status = 200L,
+              headers = list(
+                'Content-Type' = 'text/html'
+              ),
+              body = readr::read_file(path)
+            ))
           }
+          else {
+            return(list(
+              status = 404L,
+              headers = list(
+                'Content-Type' = 'text/html'
+              ),
+              body = "Not found"
+            ))
+          }
+        }
         else {
           return(list(
             status = 404L,

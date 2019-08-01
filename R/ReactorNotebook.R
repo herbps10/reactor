@@ -33,15 +33,9 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         cell
       })
       
-      cell_ranks <- rank(unlist(lapply(self$cells, '[', 'position')))
-      
-      i <- 1
-      for(id in names(self$cells)) {
-        self$cells[[id]]$position <- cell_ranks[i]
-        i <- i + 1
-      }
-      cell_ranks
+      private$position_from_rank()
     },
+    
     delete_cell = function(cell) {
       if(is.null(self$cells[[cell$id]])) return()
       if(!is.null(self$cells[[cell$id]]$name)) {
@@ -148,6 +142,8 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         open = ifelse(is.null(cell$open), FALSE, cell$open)
       );
       
+      private$position_from_rank()
+      
       
       if(!is.null(name)) {
         private$name_to_id[name] = cell$id
@@ -201,7 +197,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
     propagate_updates = function(cell) {
       # Get dependencies
       updates <- c()
-      ego_graph <- make_ego_graph(self$getGraph(), order = 1000, nodes = cell$id, mindist = 0, mode = "in")[[1]]
+      ego_graph <- make_ego_graph(self$get_graph(), order = 1000, nodes = cell$id, mindist = 0, mode = "in")[[1]]
       
       # Sort dependencies to topological order
       dependencies <- names(topo_sort(ego_graph, mode = "in")[-1])
@@ -216,7 +212,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       bind_rows(lapply(lapply(self$cells, "[", c("id", "value", "position", "hasImage", "viewWidth", "viewHeight")), reformat_nulls)) %>%
         arrange(position)
     },
-    getGraph = function() {
+    get_graph = function() {
       return(private$graph)
     },
     print = function() {
@@ -229,6 +225,9 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       res <- lapply(self$cells[topo], `[[`, "value") %>% str_c(collapse = "\n\n")
       
       res
+    },
+    export_shiny = function() {
+      
     }
   ),
   private = list(
@@ -242,6 +241,16 @@ ReactorNotebook <- R6Class("ReactorNotebook",
           get('", name, "_saved', private$env)
         }
       ")
+    },
+    position_from_rank = function() {
+      cell_ranks <- rank(unlist(lapply(self$cells, '[', 'position')))
+      
+      i <- 1
+      for(id in names(self$cells)) {
+        self$cells[[id]]$position <- cell_ranks[i]
+        i <- i + 1
+      }
+      cell_ranks
     }
   )
 )

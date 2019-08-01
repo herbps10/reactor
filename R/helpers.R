@@ -52,6 +52,7 @@ html <- function(text) {
 slider <- function(min = 0, max = 100, step = 1, value = mean(c(min, max)), title = "") {
   view <- value
   class(view) <- "view"
+  attr(view, 'call') <- list(min = min, max = max, step = 1, value = value, title = title)
   attr(view, 'view') <- glue("
   <div>
     <<make_title(title)>>
