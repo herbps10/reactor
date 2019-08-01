@@ -53,6 +53,11 @@ Any R variable with the class "htmlwidget" will be rendered as HTML.
 
 <img src="https://thumbs.gfycat.com/GrizzledSlowLacewing-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets" />
 
+## And more
+
+- View documentation in a side panel by calling it up from a cell (e.g. `?lm`) or the shortcut Ctrl-Shift-?.
+- Export notebooks to R scripts, with the cells rearranged to run from top to bottom.
+
 ## Comparison to existing tools
 
 Reactor is inspired by [Observable](http://observablehq.com), which provides a similar notebook interface for Javascript. I've been very happy with the Observable workflow, and wanted to be able to use a similar interface with R so I could access more heavy duty statistical tools. In R, the package [Shiny](https://shiny.rstudio.com) is similar, in that it supports reactive execution for R, but it doesn't currently provide the ability to author code (a new package, [shinymeta](https://rstudio.github.io/shinymeta), does allow for exporting R code that Shiny generated reactively.) [Jupyter](https://jupyter.com) notebooks are a very popular notebook interface for various backend languages, but it generally does not enforce any execution order for its cells. The [dfkernel](https://github.com/dataflownb/dfkernel/) project extends Jupyter notebooks for Python to enable a reactive execution flow. 
@@ -69,6 +74,15 @@ Reactor is inspired by [Observable](http://observablehq.com), which provides a s
 
 - [x] export to R script 
 - [ ] export to HTML
+- [ ] run in shiny
+- renderers
+  - [x] markdown
+  - [x] LaTeX
+  - [x] HTML
+  - [x] matrix
+  - [x] function
+  - [ ] data.frame/tibble
+  - [ ] vectors
 - HTML inputs:
   - [x] range/slider
   - [x] number
