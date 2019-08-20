@@ -5,7 +5,7 @@ _Reactive notebooks for R_
   [![Travis build status](https://travis-ci.org/herbps10/Reactor.svg?branch=master)](https://travis-ci.org/herbps10/Reactor)
 <!-- badges: end -->
 
-**This is experimental software**. That means there are bugs, and the API is liable to change without maintaining backwards compatibility. Use at your own risk.
+**This is experimental software**. There are bugs, and the API is liable to change without maintaining backwards compatibility.
 
 ## What is it?
 Reactor notebooks are collections of cells containing R code. When you update a cell, all of the cells that reference it are automatically updated, like how a spreadsheet works. Reactor notebooks integrate R code, plots, HTML, and markdown into one document.
