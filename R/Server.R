@@ -2,9 +2,9 @@ options(max.print = 10)
 
 # Format a cell ready for conversion to JSON
 # 
-formatCell <- function(cell) {
+format_cell <- function(cell) {
   if(any(class(cell$result) %in% c("md", "html", "latex"))) {
-    res <- paste0(cell$result, collapse = "\n")
+    res <- paste0(unclass(cell$result), collapse = "\n")
   }
   else if(class(cell$result) == "matrix") {
     res <- cell$result
@@ -100,8 +100,9 @@ start_reactor <- function(notebook) {
         }
       },
       onWSOpen = function(ws) {
+        # Send full notebook state to client
         if(length(notebook$cells) > 0) {
-          ws$send(toJSON(list(cells = map(notebook$cells, formatCell)[order(unlist(lapply(notebook$cells, "[", "position")), decreasing = FALSE)])))
+          ws$send(toJSON(list(cells = map(notebook$cells, format_cell)[order(unlist(lapply(notebook$cells, "[", "position")), decreasing = FALSE)])))
         }
         else {
           ws$send(toJSON(list(cells = c())))
@@ -111,6 +112,11 @@ start_reactor <- function(notebook) {
           payload = fromJSON(contents)
           result <- NULL
           
+          #
+          # Handle message types
+          #
+          
+          # Update cell contents
           if(payload$type == "update") {
             cell <- payload$cell
             changeset <- tryCatch({
@@ -123,37 +129,42 @@ start_reactor <- function(notebook) {
             #result <- list(id = cell$id, result = paste0(capture.output(value), collapse = "\n"), hasImage = hasImage)
             
             if(!("error" %in% class(changeset))) {
-              result <- map(changeset, function(id) formatCell(notebook$cells[[id]]))
+              result <- map(changeset, function(id) format_cell(notebook$cells[[id]]))
             }
             else {
               result <- list(id = cell$id, error = toString(changeset))
             }
           }
+          # Delete cell
           else if(payload$type == "delete") {
             cell <- payload$cell
             
             notebook$delete_cell(cell)
           }
+          # Move cell
           else if(payload$type == "move") {
             notebook$move(payload$source, payload$destination)
           }
-          else if(payload$type == "updateView") {
-            changeset <- notebook$viewUpdate(payload$cell, payload$value)
+          # Update cell value based on HTML view
+          else if(payload$type == "update_from_view") {
+            changeset <- notebook$update_from_view(payload$cell, payload$value)
             
             if(!("error" %in% class(changeset))) {
-              result <- map(changeset, function(id) formatCell(notebook$cells[[id]]))
+              result <- map(changeset, function(id) format_cell(notebook$cells[[id]]))
             }
             else {
               result <- list(id = cell$id, error = toString(changeset))
             }
           }
-          else if(payload$type == "updateOpen") {
+          # Update open/closed cell state
+          else if(payload$type == "update_open") {
             if(!is.null(notebook$cells[[payload$cell$id]])) {
-              notebook$updateOpen(payload$cell, payload$value)
+              notebook$update_open(payload$cell, payload$value)
             }
           }
-          else if(payload$type == "updateSize") {
-            notebook$updateSize(payload$cell, payload$value)
+          # Update output size of cell
+          else if(payload$type == "update_size") {
+            notebook$update_size(payload$cell, payload$value)
           }
           
           if(!is.null(result)) {
@@ -162,8 +173,8 @@ start_reactor <- function(notebook) {
         })
       },
       staticPaths = list(
-        "/output" = notebook$staticDir,
-        "/" = system.file(package = "Reactor", "frontend")
+        "/output" = notebook$static_dir,
+        "/" = "inst/frontend"
       ),
       staticPathOptions = staticPathOptions(fallthrough = TRUE)
     )

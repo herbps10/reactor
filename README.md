@@ -12,23 +12,38 @@ Reactor notebooks are collections of cells containing R code. When you update a 
 
 Reactor notebooks are useful for prototyping code and exploring subjects through interactive visualizations.
 
-<img src='https://i.imgur.com/BNeLEPW.png' width='75%' />
+<img src='https://i.imgur.com/2Los4zE.png' width='75%' />
 
 ## Getting started
+Install and load `Reactor`:
 ```r
 devtools::install_github("herbps10/Reactor")
 
 library(Reactor)
+```
 
+Create a new notebook and launch the Reactor server:
+```r
 # Create new Reactor notebook
 notebook <- ReactorNotebook$new()
 
 # Launch server at http://localhost:5000
 server <- start_reactor(notebook)
+```
 
-# Bring down server
+Save progress and stop the server:
+```r
+# Save progress
+notebook$save("./notebook.rds")
+
+# Stop server
 stop_reactor(server)
+```
 
+Load the notebook later to start where you left off:
+```r
+# Load notebook
+notebook <- ReactorNotebook$load("./notebook.rds")
 ```
 
 ## Features
