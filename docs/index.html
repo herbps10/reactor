@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive, Reactive Notebooks for R • Reactor</title>
+<title>Interactive, Reactive Notebooks for R • reactor</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -34,7 +34,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">Reactor</a>
+        <a class="navbar-link" href="index.html">reactor</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -75,29 +75,36 @@
 <p><em>Reactive notebooks for R</em></p>
 <!-- badges: start -->
 <p><a href="https://travis-ci.org/herbps10/Reactor"><img src="https://travis-ci.org/herbps10/Reactor.svg?branch=master" alt="Travis build status"></a> <!-- badges: end --></p>
-<p><strong>This is experimental software</strong>. That means there are bugs, and the API is liable to change without maintaining backwards compatibility. Use at your own risk.</p>
+<p><strong>This is experimental software</strong>. There are bugs, and the API is liable to change without maintaining backwards compatibility.</p>
 <div id="what-is-it" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-is-it" class="anchor"></a>What is it?</h2>
 <p>Reactor notebooks are collections of cells containing R code. When you update a cell, all of the cells that reference it are automatically updated, like how a spreadsheet works. Reactor notebooks integrate R code, plots, HTML, and markdown into one document.</p>
 <p>Reactor notebooks are useful for prototyping code and exploring subjects through interactive visualizations.</p>
-<p><img src="https://i.imgur.com/BNeLEPW.png" width="75%"></p>
+<p><img src="https://i.imgur.com/2Los4zE.png" width="75%"></p>
 </div>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
 <a href="#getting-started" class="anchor"></a>Getting started</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"herbps10/Reactor"</span>)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Reactor)
-
-<span class="co"># Create new Reactor notebook</span>
-notebook &lt;-<span class="st"> </span>ReactorNotebook<span class="op">$</span><span class="kw">new</span>()
-
-<span class="co"># Launch server at http://localhost:5000</span>
-server &lt;-<span class="st"> </span><span class="kw">launch_reactor_notebook</span>(notebook)
-
-<span class="co"># Bring down server</span>
-<span class="kw">stop_reactor_notebook</span>(server)</code></pre></div>
+<p>Install and load <code>reactor</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"herbps10/reactor"</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(reactor)</a></code></pre></div>
+<p>Create a new notebook and launch the Reactor server:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Create new Reactor notebook</span></a>
+<a class="sourceLine" id="cb2-2" title="2">notebook &lt;-<span class="st"> </span>ReactorNotebook<span class="op">$</span><span class="kw">new</span>()</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># Launch server at http://localhost:5000</span></a>
+<a class="sourceLine" id="cb2-5" title="5">server &lt;-<span class="st"> </span><span class="kw">start_reactor</span>(notebook)</a></code></pre></div>
+<p>Save progress and stop the server:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Save progress</span></a>
+<a class="sourceLine" id="cb3-2" title="2">notebook<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/save">save</a></span>(<span class="st">"./notebook.rds"</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># Stop server</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">stop_reactor</span>(server)</a></code></pre></div>
+<p>Load the notebook later to start where you left off:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Load notebook</span></a>
+<a class="sourceLine" id="cb4-2" title="2">notebook &lt;-<span class="st"> </span>ReactorNotebook<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/load">load</a></span>(<span class="st">"./notebook.rds"</span>)</a></code></pre></div>
 </div>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
@@ -126,6 +133,14 @@ server &lt;-<span class="st"> </span><span class="kw">launch_reactor_notebook</s
 <p>Any R variable with the class “htmlwidget” will be rendered as HTML.</p>
 <p><img src="https://thumbs.gfycat.com/GrizzledSlowLacewing-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets"></p>
 </div>
+</div>
+<div id="and-more" class="section level2">
+<h2 class="hasAnchor">
+<a href="#and-more" class="anchor"></a>And more</h2>
+<ul>
+<li>View documentation in a side panel by calling it up from a cell (e.g. <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">?lm</a></code>) or the shortcut Ctrl-Shift-?.</li>
+<li>Export notebooks to R scripts, with the cells rearranged to run from top to bottom.</li>
+</ul>
 </div>
 <div id="comparison-to-existing-tools" class="section level2">
 <h2 class="hasAnchor">
@@ -179,13 +194,28 @@ server &lt;-<span class="st"> </span><span class="kw">launch_reactor_notebook</s
 <ul>
 <li>[x] export to R script</li>
 <li>[ ] export to HTML</li>
-<li>HTML inputs:</li>
+<li>[ ] run in shiny</li>
+<li>renderers
+<ul>
+<li>[x] markdown</li>
+<li>[x] LaTeX</li>
+<li>[x] HTML</li>
+<li>[x] matrix</li>
+<li>[x] function</li>
+<li>[ ] data.frame/tibble</li>
+<li>[ ] vectors</li>
+</ul>
+</li>
+<li>HTML inputs:
+<ul>
 <li>[x] range/slider</li>
 <li>[x] number</li>
 <li>[x] checkbox</li>
 <li>[ ] radiobox</li>
 <li>[x] text</li>
 <li>[ ] textarea</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
