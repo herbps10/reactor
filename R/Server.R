@@ -38,6 +38,8 @@ format_cell <- function(cell) {
 #' 
 #' @importFrom httpuv startServer staticPathOptions
 #' @importFrom jsonlite fromJSON toJSON
+#' @importFrom utils help
+#' @importFrom readr read_file
 #' 
 #' @examples 
 #' \dontrun{
@@ -76,7 +78,7 @@ start_reactor <- function(notebook) {
               headers = list(
                 'Content-Type' = 'text/html'
               ),
-              body = readr::read_file(path)
+              body = read_file(path)
             ))
           }
           else {

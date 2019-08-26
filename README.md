@@ -72,6 +72,7 @@ Any R variable with the class "htmlwidget" will be rendered as HTML.
 
 - View documentation in a side panel by calling it up from a cell (e.g. `?lm`) or the shortcut Ctrl-Shift-?.
 - Export notebooks to R scripts, with the cells rearranged to run from top to bottom.
+- Run notebooks in Shiny.
 
 ## Comparison to existing tools
 

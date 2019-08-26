@@ -1,14 +1,14 @@
 withMathJax2 <- function (...) {
   path <- "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-  mathjaxConfig <- HTML("
+  mathjaxConfig <- shiny::HTML("
     MathJax.Hub.Config({
       tex2jax: { inlineMath: [['$', '$'], ['\\\\(', '\\\\)']] }
     })
   ")
-  tagList(
+  shiny::tagList(
           shiny::tags$head(shiny::tags$script(mathjaxConfig, type = "text/x-mathjax-config")),
           shiny::tags$head(shiny::singleton(shiny::tags$script(src = path, type = "text/javascript"))), 
-          ..., shiny::tags$script(HTML("if (window.MathJax) MathJax.Hub.Queue([\"Typeset\", MathJax.Hub]);")))
+          ..., shiny::tags$script(shiny::HTML("if (window.MathJax) MathJax.Hub.Queue([\"Typeset\", MathJax.Hub]);")))
 }
 
 cell_to_ui_element <- function(cell) {
@@ -63,6 +63,14 @@ fixNames <- function(notebook, cell, input_names) {
   ), collapse = "\n")
 }
 
+#' Run a reactor notebook in Shiny
+#' 
+#' @param notebook Reactor notebook
+#' 
+#' importFrom shiny fluidPage
+#' importFrom glue glue
+#'
+#' @export
 start_reactor_as_shiny <- function(notebook) {
   
   ui_elements <- lapply(notebook$cells, cell_to_ui_element)
@@ -88,7 +96,7 @@ start_reactor_as_shiny <- function(notebook) {
       
       # HTML
       else if(c("html") %in% class(cell$result)) {
-        dependencies <- fixNames(notebook, cell, isolate(names(input)))
+        dependencies <- fixNames(notebook, cell, shiny::isolate(names(input)))
         render_text <- glue::glue("
         output$`<<cell$id>>` <- shiny::renderUI({
           <<dependencies>>
@@ -100,7 +108,7 @@ start_reactor_as_shiny <- function(notebook) {
       
       # Markdown
       else if(c("md") %in% class(cell$result)) {
-        dependencies <- fixNames(notebook, cell, isolate(names(input)))
+        dependencies <- fixNames(notebook, cell, shiny::isolate(names(input)))
         render_text <- glue::glue("
         output$`<<cell$id>>` <- shiny::renderUI({
           <<dependencies>>
@@ -114,7 +122,7 @@ start_reactor_as_shiny <- function(notebook) {
       
       # Plot
       else if(cell$hasImage == TRUE) {
-        dependencies <- fixNames(notebook, cell, isolate(names(input)))
+        dependencies <- fixNames(notebook, cell, shiny::isolate(names(input)))
         render_text <- glue::glue("
         output$`<<cell$id>>` <- shiny::renderPlot({
           <<dependencies>>
@@ -125,7 +133,7 @@ start_reactor_as_shiny <- function(notebook) {
       
       # Reactive variable
       else if(!is.null(cell$name)) {
-        dependencies <- fixNames(notebook, cell, isolate(names(input)))
+        dependencies <- fixNames(notebook, cell, shiny::isolate(names(input)))
         reactive_text <- glue::glue("
         `<<cell$id>>Reactive` <- shiny::reactive({
           <<dependencies>>
@@ -136,7 +144,7 @@ start_reactor_as_shiny <- function(notebook) {
       
       # Render everything else as text
       else {
-        dependencies <- fixNames(notebook, cell, isolate(names(input)))
+        dependencies <- fixNames(notebook, cell, shiny::isolate(names(input)))
         render_text <- glue::glue("
         output$`<<cell$id>>` <- shiny::renderText({
           <<dependencies>>
