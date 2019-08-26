@@ -62,19 +62,21 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         self$run_cell(cell, update = FALSE)
       }
     },
-    run_cell = function(cell, update = TRUE) {
+    run_cell = function(cell, update = TRUE, capturePlots = TRUE) {
       private$callstack = c()
       
       #
       # Set up plot capturing
       #
-      while(dev.cur() > 1) dev.off()
-      
-      ggplot2:::.store$set(NULL)
-      
-      svgPath <- paste0(file.path(self$static_dir, cell$id), ".svg")
-      svg(filename = svgPath)
-      dev.control(displaylist = "enable")
+      if(capturePlots == TRUE) {
+        while(dev.cur() > 1) dev.off()
+        
+        ggplot2:::.store$set(NULL)
+        
+        svgPath <- paste0(file.path(self$static_dir, cell$id), ".svg")
+        svg(filename = svgPath)
+        dev.control(displaylist = "enable")
+      }
       
       #
       # Run the cell
@@ -101,13 +103,16 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       #
       # Capture any plots from the cell
       # 
-      p <- recordPlot()
-      p2 <- last_plot()
-      dev.off()
-      if(!is.null(p2)) {
-        ggsave(svgPath)
+      hasImage = FALSE
+      if(capturePlots == TRUE) {
+        p <- recordPlot()
+        p2 <- last_plot()
+        dev.off()
+        if(!is.null(p2)) {
+          ggsave(svgPath)
+        }
+        hasImage = !is.null(p[[1]]) || !is.null(p2)
       }
-      hasImage = !is.null(p[[1]]) || !is.null(p2)
       
       #
       # Figure out the cell position

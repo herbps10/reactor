@@ -1,4 +1,4 @@
 library(testthat)
-library(Reactor)
+library(reactor)
 
-test_check("Reactor")
+test_check("reactor")

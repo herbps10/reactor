@@ -15,11 +15,11 @@ Reactor notebooks are useful for prototyping code and exploring subjects through
 <img src='https://i.imgur.com/2Los4zE.png' width='75%' />
 
 ## Getting started
-Install and load `Reactor`:
+Install and load `reactor`:
 ```r
-devtools::install_github("herbps10/Reactor")
+devtools::install_github("herbps10/reactor")
 
-library(Reactor)
+library(reactor)
 ```
 
 Create a new notebook and launch the Reactor server:
