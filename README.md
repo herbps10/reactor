@@ -97,7 +97,7 @@ Reactor is inspired by [Observable](http://observablehq.com), which provides a s
 
 - [x] export to R script 
 - [ ] export to HTML
-- [ ] run in shiny
+- [x] run in shiny
 - renderers
   - [x] markdown
   - [x] LaTeX
