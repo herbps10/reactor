@@ -14,6 +14,13 @@ Reactor notebooks are useful for prototyping code and exploring subjects through
 
 <img src='https://i.imgur.com/2Los4zE.png' width='75%' />
 
+## Demo video
+The [demo video](https://www.youtube.com/watch?v=2GViKLqthZo&feature=youtu.be) on YouTube shows how to use Reactor to build a simple interactive notebook:
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=2GViKLqthZo
+" target="_blank"><img src="https://img.youtube.com/vi/2GViKLqthZo/mqdefault.jpg" 
+alt="Reactor demo: interactive notebooks for R" width="320" height="180" border="10" /></a>
+
 ## Getting started
 Install and load `reactor`:
 ```r

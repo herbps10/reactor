@@ -73,7 +73,7 @@ fixNames <- function(notebook, cell, input_names) {
 #' @export
 start_reactor_as_shiny <- function(notebook) {
   
-  ui_elements <- lapply(notebook$cells, cell_to_ui_element)
+  ui_elements <- lapply(notebook$cells[order(unlist(lapply(notebook$cells, `[[`, 'position')))], cell_to_ui_element)
   
   ui <- shiny::fluidPage(ui_elements)
   
