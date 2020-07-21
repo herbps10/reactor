@@ -130,3 +130,12 @@ test_that("saving and loading works", {
   expect_equal(nb$run_in_env("a"), 10)
   expect_equal(nb$run_in_env("b"), 10)
 })
+
+test_that("export works", {
+  nb <- ReactorNotebook$new()
+  
+  nb$run_cell(list(id = "a", value = "a <- 10", position = 1))
+  nb$run_cell(list(id = "b", value = "b <- a", position = 2))
+  
+  expect_equal(nb$export(), "a <- 10\n\nb <- a")
+})
