@@ -4,8 +4,7 @@
 \alias{slider}
 \title{Generate an HTML slider input}
 \usage{
-slider(min = 0, max = 100, step = 1, value = mean(c(min, max)),
-  title = "")
+slider(min = 0, max = 100, step = 1, value = mean(c(min, max)), title = "")
 }
 \arguments{
 \item{min}{minimum}

@@ -8,6 +8,7 @@
 #' @importFrom ggplot2 last_plot
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows arrange
+#' @importFrom stringr str_c
 #' 
 #' @export
 ReactorNotebook <- R6Class("ReactorNotebook",
@@ -255,7 +256,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
     },
     export = function() {
       topo <- topo_sort(private$graph, mode = "in")
-      res <- lapply(self$cells[topo], `[[`, "value") %>% str_c(collapse = "\n\n")
+      res <- stringr::str_c(lapply(self$cells[topo], `[[`, "value"), collapse = "\n\n")
       
       res
     },

@@ -4,8 +4,7 @@
 \alias{number}
 \title{Generate an HTML number input}
 \usage{
-number(min = 0, max = 100, step = 1, value = mean(c(min, max)),
-  title = "")
+number(min = 0, max = 100, step = 1, value = mean(c(min, max)), title = "")
 }
 \arguments{
 \item{min}{minimum}
