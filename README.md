@@ -88,6 +88,7 @@ Reactor is inspired by [Observable](http://observablehq.com), which provides a s
 |                                      | Language   | Authoring | Reactive |
 |--------------------------------------|------------|-----------|----------|
 | Reactor                              | R          | ✔         | ✔        |
+| [Pluto.jl](https://github.com/fonsp/Pluto.jl)    | Julia      | ✔         | ✔        |
 | [Shiny](https://shiny.rstudio.com/)   | R          |           | ✔        |
 | [Observable](https://observablehq.com)| Javascript | ✔         | ✔        |
 | [Jupyter](https://jupyter.com)               | Various    | ✔         | For Python with [dfkernel](https://github.com/dataflownb/dfkernel/)        |
