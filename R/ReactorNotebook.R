@@ -8,7 +8,10 @@
 #' @importFrom ggplot2 last_plot
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows arrange
-#' @importFrom stringr str_c
+#' @importFrom glue glue
+#' @importFrom knitr all_patterns
+#' @importFrom knitr knit_patterns
+#' @importFrom knitr knit_code
 #' 
 #' @export
 ReactorNotebook <- R6Class("ReactorNotebook",
@@ -233,26 +236,65 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         cat(cell$value, "\n", sep = "")
       }
     },
-    save = function(file) {
-      contents_to_save <- list(
-        graph = private$graph,
-        cells = self$cells,
-        name_to_id = private$name_to_id,
-        static_dir = self$static_dir
-      ) 
-      
-      saveRDS(contents_to_save, file)
+    save = function(file, rds = FALSE) {
+      if(rds == TRUE) {
+        contents_to_save <- list(
+          graph = private$graph,
+          cells = self$cells,
+          name_to_id = private$name_to_id,
+          static_dir = self$static_dir
+        ) 
+        
+        saveRDS(contents_to_save, file)
+      }
+      else {
+        topo <- topo_sort(private$graph, mode = "in")
+        chunks <- lapply(self$cells[topo], private$cell_to_chunk)
+        header <- glue::glue("This is a [Reactor](https://github.com/herbps10/reactor) notebook. Here's how to run this notebook in Reactor: \n
+        ```
+        library(reactor)
+        
+        notebook <- ReactorNotebook$load('{tools::file_ext(file)}')
+        start_reactor(notebook)
+        ```\n\n
+        ")
+        
+        footer <- "\n"
+        
+        txt <- str_c(header, str_c(unlist(chunks), collapse = "\n\n"), footer)
+        
+        cat(txt, file = file)
+      }
     },
     load_ = function(file) {
-      contents <- readRDS(file)
-      
-      private$graph <- contents$graph
-      self$cells <- contents$cells
-      private$name_to_id <- contents$name_to_id
-      self$static_dir <- contents$static_dir
-      if(!file.exists(self$static_dir)) self$static_dir <- tempdir()
-      
-      self$run_all()
+      # Backwards compatibility
+      # Handle RDS files
+      if(tolower(tools::file_ext(file)) == "rds") {
+        contents <- readRDS(file)
+        
+        private$graph <- contents$graph
+        self$cells <- contents$cells
+        private$name_to_id <- contents$name_to_id
+        self$static_dir <- contents$static_dir
+        if(!file.exists(self$static_dir)) self$static_dir <- tempdir()
+        
+        self$run_all()
+      }
+      else {
+        knit_code$restore()
+        md_pattern <- all_patterns[["md"]]
+        knit_patterns$set(md_pattern)
+        
+        lines <- readLines(file)
+        knitr:::split_file(lines)
+        
+        chunks <- knitr:::knit_code$get()
+        
+        cells <- lapply(chunks, private$chunk_to_cell)
+        
+        lapply(cells, self$run_cell, update = FALSE)
+        
+      }
     },
     export = function() {
       topo <- topo_sort(private$graph, mode = "in")
@@ -285,6 +327,27 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         i <- i + 1
       }
       cell_ranks
+    },
+    cell_to_chunk = function(cell) {
+      private$make_chunk(cell$id, cell$value, list(
+        position = cell$position,
+        open = cell$open,
+        hasImage = cell$hasImage,
+        viewWidth = cell$viewWidth,
+        viewHeight = cell$viewHeight
+      ))
+    },
+    make_chunk = function(id, value, props) {
+      props <- props[!unlist(map(props, is.null))]
+      prop_string <- str_c(names(props), "=", props, collapse = ", ")
+      glue("```{{r {id}, {prop_string}}}\n{value}\n```")
+    },
+    chunk_to_cell = function(chunk) {
+      attr(chunk, "chunk_opts")$label <- str_replace(attr(chunk, "chunk_opts")$label, "^r ", "")
+      c(list(
+        id = attr(chunk, "chunk_opts")$label,
+        value = chunk[1]
+      ), attributes(chunk)$chunk_opts)
     }
   )
 )

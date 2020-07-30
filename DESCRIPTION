@@ -35,4 +35,5 @@ Imports:
     stringr,
     dplyr,
     utils,
-    readr
+    readr,
+    knitr

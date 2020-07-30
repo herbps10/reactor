@@ -118,8 +118,8 @@ test_that("update_from_view works", {
 test_that("saving and loading works", {
   nb <- ReactorNotebook$new()
   
-  nb$run_cell(list(id = "a", value = "a <- 10", position = 1))
-  nb$run_cell(list(id = "b", value = "b <- a", position = 2))
+  nb$run_cell(list(id = "a", value = "a <- 10", position = 1, open = FALSE))
+  nb$run_cell(list(id = "b", value = "b <- a", position = 2, open = TRUE))
   
   tmp <- tempfile()
   
@@ -127,9 +127,29 @@ test_that("saving and loading works", {
   
   nb_load <- ReactorNotebook$load(tmp)
   
-  expect_equal(nb$run_in_env("a"), 10)
-  expect_equal(nb$run_in_env("b"), 10)
+  expect_equal(nb_load$run_in_env("a"), 10)
+  expect_equal(nb_load$run_in_env("b"), 10)
+  
+  expect_equal(nb_load$cells[[1]]$id, "a")
+  expect_equal(nb_load$cells[[2]]$id, "b")
+  
+  expect_equal(nb_load$cells[[1]]$open, FALSE)
+  expect_equal(nb_load$cells[[2]]$open, TRUE)
 })
+
+test_that("saving and loading with plots works", {
+  nb <- ReactorNotebook$new()
+  
+  nb$run_cell(list(id = "a", value = "a <- slider(min = 1, max = 100, step = 1)", position = 1))
+  nb$run_cell(list(id = "b", value = "b <- plot(seq(1, a, 0.5), type = 'l')", position = 2))
+  
+  tmp <- tempfile()
+  
+  nb$save(tmp)
+  
+  nb_load <- ReactorNotebook$load(tmp)
+})
+
 
 test_that("export works", {
   nb <- ReactorNotebook$new()

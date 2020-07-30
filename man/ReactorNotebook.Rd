@@ -153,7 +153,7 @@ Reactor Notebook R6 class
 \if{latex}{\out{\hypertarget{method-save}{}}}
 \subsection{Method \code{save()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ReactorNotebook$save(file)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ReactorNotebook$save(file, rds = FALSE)}\if{html}{\out{</div>}}
 }
 
 }
