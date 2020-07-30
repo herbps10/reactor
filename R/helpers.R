@@ -8,8 +8,17 @@ make_title <- function(title) {
 #' @param text text to display as markdown
 #' @export
 md <- function(text) {
-  class(text) <- "md"
+  class(text) <- c("md")
   text
+}
+
+#' Print md class
+#' 
+#' @param mdtext markdown text
+#' @export
+print.md <- function(mdtext) {
+  attributes(mdtext) <- NULL
+  cat(mdtext)
 }
 
 #' Mark text to be displayed as markdown

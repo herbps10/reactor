@@ -148,6 +148,11 @@ test_that("saving and loading with plots works", {
   nb$save(tmp)
   
   nb_load <- ReactorNotebook$load(tmp)
+  
+  expect_equal(nb_load$cells[[1]]$value, "a <- slider(min = 1, max = 100, step = 1)")
+  expect_equal(nb_load$cells[[2]]$value, "b <- plot(seq(1, a, 0.5), type = 'l')")
+  
+  expect_equal(nb_load$cells[[2]]$hasImage, TRUE)
 })
 
 

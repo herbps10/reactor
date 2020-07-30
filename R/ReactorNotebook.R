@@ -152,8 +152,8 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         hasImage = hasImage,
         name = name,
         result = res,
-        viewWidth = NULL,
-        viewHeight = NULL,
+        viewWidth = cell$viewWidth,
+        viewHeight = cell$viewHeight,
         open = ifelse(is.null(cell$open), FALSE, cell$open)
       );
       
@@ -250,13 +250,20 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       else {
         topo <- topo_sort(private$graph, mode = "in")
         chunks <- lapply(self$cells[topo], private$cell_to_chunk)
-        header <- glue::glue("This is a [Reactor](https://github.com/herbps10/reactor) notebook. Here's how to run this notebook in Reactor: \n
-        ```
-        library(reactor)
+        header <- glue::glue("
+        ```{{r setup, include=FALSE}}
+        # This is a [Reactor](https://github.com/herbps10/reactor) notebook. Here's how to run this notebook in Reactor: \n
+        # ```
+        # library(reactor)
+        # 
+        # notebook <- ReactorNotebook$load('{tools::file_ext(file)}')
+        # start_reactor(notebook)
+        # ```
         
-        notebook <- ReactorNotebook$load('{tools::file_ext(file)}')
-        start_reactor(notebook)
-        ```\n\n
+        library(reactor)
+        ```
+        
+        
         ")
         
         footer <- "\n"
@@ -291,6 +298,8 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         chunks <- knitr:::knit_code$get()
         
         cells <- lapply(chunks, private$chunk_to_cell)
+        
+        cells <- Filter(function(cell) cell$id != "setup", cells)
         
         lapply(cells, self$run_cell, update = FALSE)
         
@@ -329,13 +338,19 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       cell_ranks
     },
     cell_to_chunk = function(cell) {
-      private$make_chunk(cell$id, cell$value, list(
+      props <- list(
         position = cell$position,
         open = cell$open,
         hasImage = cell$hasImage,
         viewWidth = cell$viewWidth,
-        viewHeight = cell$viewHeight
-      ))
+        viewHeight = cell$viewHeight,
+        echo = TRUE
+      )
+      if("md" %in% class(cell$result)) {
+        props$results <- "'asis'"
+        props$echo <- FALSE
+      }
+      private$make_chunk(cell$id, cell$value, props)
     },
     make_chunk = function(id, value, props) {
       props <- props[!unlist(map(props, is.null))]
@@ -346,7 +361,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       attr(chunk, "chunk_opts")$label <- str_replace(attr(chunk, "chunk_opts")$label, "^r ", "")
       c(list(
         id = attr(chunk, "chunk_opts")$label,
-        value = chunk[1]
+        value = str_c(as.vector(chunk), collapse = "\n")
       ), attributes(chunk)$chunk_opts)
     }
   )
