@@ -14,11 +14,12 @@ md <- function(text) {
 
 #' Print md class
 #' 
-#' @param mdtext markdown text
+#' @param x markdown text
+#' @param ... not used
 #' @export
-print.md <- function(mdtext) {
-  attributes(mdtext) <- NULL
-  cat(mdtext)
+print.md <- function(x, ...) {
+  attributes(x) <- NULL
+  cat(x)
 }
 
 #' Mark text to be displayed as markdown

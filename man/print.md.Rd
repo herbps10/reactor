@@ -4,10 +4,12 @@
 \alias{print.md}
 \title{Print md class}
 \usage{
-\method{print}{md}(mdtext)
+\method{print}{md}(x, ...)
 }
 \arguments{
-\item{mdtext}{markdown text}
+\item{x}{markdown text}
+
+\item{...}{not used}
 }
 \description{
 Print md class
