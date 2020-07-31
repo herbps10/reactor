@@ -11,7 +11,7 @@
 library(reactor)
 ```
 
-```{r f1ca1450-d284-11ea-b11b-7dbd38ed4601, position=2, open=FALSE, hasImage=FALSE, echo=FALSE, results='asis'}
+```{r f1ca1450-d284-11ea-b11b-7dbd38ed4601, position=1, open=FALSE, hasImage=FALSE, echo=FALSE, results='asis'}
 md("
 # Gaussian Processes
 
@@ -30,25 +30,25 @@ $$
 ")
 ```
 
-```{r 07dd3690-d286-11ea-b11b-7dbd38ed4601, position=3, open=FALSE, hasImage=FALSE, echo=TRUE}
+```{r 07dd3690-d286-11ea-b11b-7dbd38ed4601, position=2, open=FALSE, hasImage=FALSE, echo=TRUE}
 squared_exponential_kernel <- function(t1, t2, sigma, lambda) sigma^2 * exp(-(t1 - t2)^2 / (2 * lambda^2))
 ```
 
-```{r 21b54580-d286-11ea-b11b-7dbd38ed4601, position=4, open=FALSE, hasImage=FALSE, echo=FALSE, results='asis'}
+```{r 21b54580-d286-11ea-b11b-7dbd38ed4601, position=3, open=FALSE, hasImage=FALSE, echo=FALSE, results='asis'}
 md("
 We can draw from a Gaussian Process at points $\\boldsymbol{t}$ by drawing from a multivariate normal distribution with mean zero and covariance computed using the kernel function.
 ")
 ```
 
-```{r 4f2b7480-d286-11ea-b11b-7dbd38ed4601, position=5, open=FALSE, hasImage=FALSE, echo=TRUE}
+```{r 4f2b7480-d286-11ea-b11b-7dbd38ed4601, position=4, open=FALSE, hasImage=FALSE, echo=TRUE}
 sigma <- slider(min = 0.1, max = 1, title = "Sigma: covariance scale parameter", step = 0.01, value = 0.5)
 ```
 
-```{r 5846d870-d286-11ea-b11b-7dbd38ed4601, position=6, open=FALSE, hasImage=FALSE, echo=TRUE}
+```{r 5846d870-d286-11ea-b11b-7dbd38ed4601, position=5, open=FALSE, hasImage=FALSE, echo=TRUE}
 lambda <- slider(min = 0.1, max = 5, step = 0.01, value = 3, title = "Lambda: length-scale parameter")
 ```
 
-```{r b3329a30-d286-11ea-b11b-7dbd38ed4601, position=1, open=FALSE, hasImage=TRUE, viewWidth=0.344632768361582, echo=TRUE}
+```{r b3329a30-d286-11ea-b11b-7dbd38ed4601, position=6, open=TRUE, hasImage=TRUE, viewWidth=0.344632768361582, echo=TRUE}
 {
 	t <- 20
     mu <- rep(0, t)
