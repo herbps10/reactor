@@ -65,7 +65,7 @@ Interactive inputs can be used to set the value of an R variable.
 
 <img src="https://thumbs.gfycat.com/SickCircularLeonberger-size_restricted.gif" width="100%" alt="Example of interactive inputs" />
 
-## Plotting
+### Plotting
 Reactor supports base plots and ggplot2.
 
 <img src="https://thumbs.gfycat.com/ParchedMedicalAardvark-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets" />
@@ -74,6 +74,9 @@ Reactor supports base plots and ggplot2.
 Any R variable with the class "htmlwidget" will be rendered as HTML. 
 
 <img src="https://thumbs.gfycat.com/GrizzledSlowLacewing-size_restricted.gif" width="100%" alt="Example of interactive HTML widgets" />
+
+### Saves to Rmd
+Reactor notebooks are saved as [R markdown](https://rmarkdown.rstudio.com/articles_intro.html) files, which you can open and edit like any other Rmd file. You can see examples of notebook files in the [`inst/examples`](https://github.com/herbps10/reactor/tree/master/inst/examples) folder.
 
 ## And more
 
