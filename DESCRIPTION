@@ -36,4 +36,5 @@ Imports:
     dplyr,
     utils,
     readr,
-    knitr
+    knitr,
+    svglite
