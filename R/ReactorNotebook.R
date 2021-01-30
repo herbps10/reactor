@@ -182,17 +182,17 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       
       # propagate the new value of this cell to the cells that depend on it
       if(update == TRUE) {
-        updates <- c(updates, self$propagate_updates(cell))
+        updates <- c(updates, self$propagate_updates(cell, capturePlots = capturePlots))
       }
       
       updates
     },
-    update_from_view = function(cell, value) {
+    update_from_view = function(cell, value, capturePlots = TRUE) {
       if(!is.null(cell$name) && cell$name != "") {
         self$run_in_env(str_c(cell$name, "_saved[1] = ", value))
       }
       
-      updates <- self$propagate_updates(cell)
+      updates <- self$propagate_updates(cell, capturePlots = capturePlots)
       updates
     },
     update_size = function(cell, value) {
@@ -209,7 +209,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         self$cells[[cell$id]]$open <- value$open
       }
     },
-    propagate_updates = function(cell) {
+    propagate_updates = function(cell, capturePlots = TRUE) {
       # Get dependencies
       updates <- c()
       ego_graph <- make_ego_graph(self$get_graph(), order = 1000, nodes = cell$id, mindist = 0, mode = "in")[[1]]
@@ -218,7 +218,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
       dependencies <- names(topo_sort(ego_graph, mode = "in")[-1])
       
       for(dependency in dependencies) {
-        updates <- c(updates, self$run_cell(self$cells[[dependency]], update = FALSE))
+        updates <- c(updates, self$run_cell(self$cells[[dependency]], update = FALSE, capturePlots = capturePlots))
       }
       updates
     },
