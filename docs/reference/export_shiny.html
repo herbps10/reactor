@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mark text to be displayed as markdown — md • reactor</title>
+<title>Exports the notebook and an app.R file for launching the notebook as a shiny application — export_shiny • reactor</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Mark text to be displayed as markdown — md" />
-<meta property="og:description" content="Mark text to be displayed as markdown" />
+<meta property="og:title" content="Exports the notebook and an app.R file for launching the notebook as a shiny application — export_shiny" />
+<meta property="og:description" content="Exports the notebook and an app.R file for launching the notebook as a shiny application" />
 
 
 
@@ -120,26 +120,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Mark text to be displayed as markdown</h1>
-    <small class="dont-index">Source: <a href='https://github.com/herbps10/Reactor/blob/master/R/helpers.R'><code>R/helpers.R</code></a></small>
-    <div class="hidden name"><code>md.Rd</code></div>
+    <h1>Exports the notebook and an app.R file for launching the notebook as a shiny application</h1>
+    <small class="dont-index">Source: <a href='https://github.com/herbps10/Reactor/blob/master/R/shiny.R'><code>R/shiny.R</code></a></small>
+    <div class="hidden name"><code>export_shiny.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Mark text to be displayed as markdown</p>
+    <p>Exports the notebook and an app.R file for launching the notebook as a shiny application</p>
     </div>
 
-    <pre class="usage"><span class='fu'>md</span><span class='op'>(</span><span class='va'>text</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>export_shiny</span><span class='op'>(</span><span class='va'>notebook</span>, <span class='va'>directory</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>text</th>
-      <td><p>text to display as markdown</p></td>
+      <th>notebook</th>
+      <td><p>Reactor notebook</p></td>
+    </tr>
+    <tr>
+      <th>directory</th>
+      <td><p>directory to place notebook and app.R file</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function creates two files in the supplied directory: notebook.Rmd, which contains the supplied Reactor notebook, and app.R,
+which is a short file that launches the notebook as a Shiny application. The resulting folder functions as a Shiny application
+suitable for deployment on e.g. shinyapps.io.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

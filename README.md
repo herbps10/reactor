@@ -12,7 +12,9 @@ Reactor notebooks are collections of cells containing R code. When you update a 
 
 Reactor notebooks are useful for prototyping code and exploring subjects through interactive visualizations.
 
-<img src='https://i.imgur.com/2Los4zE.png' width='75%' />
+<a href='https://hsusmann.shinyapps.io/gaussian_processes/'><img src='https://i.imgur.com/2Los4zE.png' width='75%' /></a>
+
+Reactor notebooks can be shared online as [Shiny](https://shiny.rstudio.com) applications. You can play with an [example notebook](https://hsusmann.shinyapps.io/gaussian_processes/) which is available online through Shiny.
 
 ## Demo video
 The [demo video](https://www.youtube.com/watch?v=2GViKLqthZo&feature=youtu.be) on YouTube shows how to use Reactor to build a simple interactive notebook:
@@ -53,6 +55,16 @@ Load the notebook later to start where you left off:
 notebook <- ReactorNotebook$load("./notebook.rds")
 ```
 
+Reactor includes an example notebook:
+```r
+# Load Gaussian Process example notebook
+notebook <- reactor_example("gaussian_processes.Rmd")
+
+server <- start_reactor(notebook)
+```
+
+You can also see and interact with the example notebook running as a [Shiny application](https://hsusmann.shinyapps.io/gaussian_processes/).
+
 ## Features
 
 ### Reactive execution
@@ -78,11 +90,13 @@ Any R variable with the class "htmlwidget" will be rendered as HTML.
 ### Saves to Rmd
 Reactor notebooks are saved as [R markdown](https://rmarkdown.rstudio.com/articles_intro.html) files, which you can open and edit like any other Rmd file. You can see examples of notebook files in the [`inst/examples`](https://github.com/herbps10/reactor/tree/master/inst/examples) folder.
 
+### Run as Shiny
+Reactor notebooks can be run as Shiny applications, making it easy to deploy notebooks online for sharing with others. 
+
 ## And more
 
 - View documentation in a side panel by calling it up from a cell (e.g. `?lm`) or the shortcut Ctrl-Shift-?.
 - Export notebooks to R scripts, with the cells rearranged to run from top to bottom.
-- Run notebooks in Shiny.
 
 ## Comparison to existing tools
 

@@ -1,0 +1,73 @@
+---
+title: "Deploying a Reactor notebook as a Shiny application"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Deploying a Reactor notebook as a Shiny application}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE
+)
+```
+
+This vignette walks through deploying a Reactor notebook as a [Shiny](https://shiny.rstudio.com/) application on [shinyapps.io](https://www.shinyapps.io/). First, we load the `Reactor` package:
+
+```{r setup, message=FALSE, warning=FALSE}
+library(reactor)
+```
+
+
+For this vignette, we'll use the Gaussian Processes example notebook provided in the package:
+```{r}
+notebook <- reactor_example("gaussian_processes.Rmd")
+```
+
+If you'd like to start from scratch with a new notebook, you can run:
+```{r, eval = FALSE, echo = TRUE}
+notebook <- ReactorNotebook$new()
+
+server <- start_reactor(notebook)
+```
+
+Now that we have a notebook, we need to export it as a Shiny application. The `export_shiny` function takes a notebook and creates two files in a given directory: `notebook.Rmd`, which contains the Reactor notebook, and `app.R`, which launches the notebook as a Shiny application. Create a folder, here we call it `app`, and then run:
+
+```{r, eval = FALSE, echo = TRUE}
+export_shiny(notebook, "./app")
+```
+
+The newly created file `./app/app.R` contains the following:
+```{r, eval = FALSE, echo = TRUE}
+# shinyApp
+
+library(shiny)
+library(reactor)
+
+notebook <- ReactorNotebook$load('notebook.Rmd')
+
+start_reactor_as_shiny(notebook)
+```
+
+If you open `app.R` in RStudio, it will recognize it as a Shiny application and the `Run App` button will appear above the editor. You can deploy the application to `shinyapps.io` using the built-in tools from RStudio. 
+
+Alternatively, you can deploy the application directly from R using the [`rsconnect`](https://github.com/rstudio/rsconnect) package. The package's [Getting Started vignette](https://shiny.rstudio.com/articles/shinyapps.html) describes how to do so in detail; we summarize the steps in this vignette as well.
+
+First, load the `rsconnect` package and set the account name, token, and secret, which can be found on the Profile / Tokens page of your [https://www.shinyapps.io] account.
+
+```{r, eval = FALSE, echo = TRUE}
+library(rsconnect)
+
+rsconnect::setAccountInfo(name="<ACCOUNT>", token="<TOKEN>", secret="<SECRET>")
+```
+
+Next, deploy the application using the [`deployApp`](https://rdrr.io/cran/rsconnect/man/deployApp.html) function, supplying an application name:
+
+```{r, eval = FALSE, echo = TRUE}
+deployApp(appDir = "app", appName = "gaussian_processes")
+```
+
+Once the deployment is complete, the notebook will be available as an online Shiny application. The example notebook used here can be found at [https://hsusmann.shinyapps.io/gaussian_processes/](https://hsusmann.shinyapps.io/gaussian_processes/).
