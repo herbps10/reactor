@@ -12,6 +12,7 @@
 #' @importFrom knitr all_patterns
 #' @importFrom knitr knit_patterns
 #' @importFrom knitr knit_code
+#' @import svglite
 #' 
 #' @export
 ReactorNotebook <- R6Class("ReactorNotebook",

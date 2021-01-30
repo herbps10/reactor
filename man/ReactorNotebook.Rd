@@ -90,7 +90,7 @@ Reactor Notebook R6 class
 \if{latex}{\out{\hypertarget{method-update_from_view}{}}}
 \subsection{Method \code{update_from_view()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ReactorNotebook$update_from_view(cell, value)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ReactorNotebook$update_from_view(cell, value, capturePlots = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -117,7 +117,7 @@ Reactor Notebook R6 class
 \if{latex}{\out{\hypertarget{method-propagate_updates}{}}}
 \subsection{Method \code{propagate_updates()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ReactorNotebook$propagate_updates(cell)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ReactorNotebook$propagate_updates(cell, capturePlots = TRUE)}\if{html}{\out{</div>}}
 }
 
 }
