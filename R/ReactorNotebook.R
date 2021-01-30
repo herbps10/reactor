@@ -257,7 +257,7 @@ ReactorNotebook <- R6Class("ReactorNotebook",
         # ```
         # library(reactor)
         # 
-        # notebook <- ReactorNotebook$load('{tools::file_ext(file)}')
+        # notebook <- ReactorNotebook$load('{basename(file)}')
         # start_reactor(notebook)
         # ```
         

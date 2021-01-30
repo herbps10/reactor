@@ -4,7 +4,7 @@
 # ```
 # library(reactor)
 # 
-# notebook <- ReactorNotebook$load('Rmd')
+# notebook <- ReactorNotebook$load('gaussian_processes.Rmd')
 # start_reactor(notebook)
 # ```
 
