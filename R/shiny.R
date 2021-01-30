@@ -165,7 +165,29 @@ start_reactor_as_shiny <- function(notebook) {
   shiny::shinyApp(ui = ui, server = server)
 }
 
+#' 
+#' Exports the notebook and an app.R file for launching the notebook as a shiny application
+#' 
+#' @param notebook Reactor notebook
+#' @param directory directory to place notebook and app.R file
+#' 
+#' @details 
+#' This function creates two files in the supplied directory: notebook.Rmd, which contains the supplied Reactor notebook, and app.R,
+#' which is a short file that launches the notebook as a Shiny application. The resulting folder functions as a Shiny application
+#' suitable for deployment on e.g. shinyapps.io.
+#' 
+#' @importFrom glue glue
+#' 
+#' @export
 export_shiny <- function(notebook, directory) {
+  if(!dir.exists(directory)) {
+    stop(glue::glue("Directory {directory} does not exist."))
+  }
+  
+  if(!("ReactorNotebook" %in% class(notebook))) {
+    stop("First argument must be a Reactor Notebook.")
+  }
+  
   notebook$save(paste0(directory, "/notebook.Rmd"))
   txt <- glue::glue("
 # shinyApp

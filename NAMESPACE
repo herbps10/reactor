@@ -3,6 +3,7 @@
 S3method(print,md)
 export(ReactorNotebook)
 export(checkbox)
+export(export_shiny)
 export(html)
 export(latex)
 export(md)
