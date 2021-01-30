@@ -21,7 +21,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 2.1.0),
-    shiny
+    shiny,
+    rmarkdown
 Imports: 
     ggplot2,
     glue,
@@ -38,3 +39,4 @@ Imports:
     readr,
     knitr,
     svglite
+VignetteBuilder: knitr
