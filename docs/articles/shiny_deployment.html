@@ -96,12 +96,33 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">notebook</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reactor_example.html">reactor_example</a></span><span class="op">(</span><span class="st">"gaussian_processes.Rmd"</span><span class="op">)</span></code></pre></div>
 <p>If you’d like to start from scratch with a new notebook, you can run:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">notebook</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ReactorNotebook.html">ReactorNotebook</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">server</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/start_reactor.html">start_reactor</a></span><span class="op">(</span><span class="va">notebook</span><span class="op">)</span></code></pre></div>
 <p>Now that we have a notebook, we need to export it as a Shiny application. The <code>export_shiny</code> function takes a notebook and creates two files in a given directory: <code>notebook.Rmd</code>, which contains the Reactor notebook, and <code>app.R</code>, which launches the notebook as a Shiny application. Create a folder, here we call it <code>app</code>, and then run:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/export_shiny.html">export_shiny</a></span><span class="op">(</span><span class="va">notebook</span>, <span class="st">"./app"</span><span class="op">)</span></code></pre></div>
 <p>The newly created file <code>./app/app.R</code> contains the following:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># shinyApp</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://shiny.rstudio.com">shiny</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://herbsusmann.com/Reactor">reactor</a></span><span class="op">)</span>
+
+<span class="va">notebook</span> <span class="op">&lt;-</span> <span class="va">ReactorNotebook</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'notebook.Rmd'</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/start_reactor_as_shiny.html">start_reactor_as_shiny</a></span><span class="op">(</span><span class="va">notebook</span><span class="op">)</span></code></pre></div>
 <p>If you open <code>app.R</code> in RStudio, it will recognize it as a Shiny application and the <code>Run App</code> button will appear above the editor. You can deploy the application to <code>shinyapps.io</code> using the built-in tools from RStudio.</p>
-<p>Alternatively, you can deploy the application directly from R using the <a href="https://github.com/rstudio/rsconnect"><code>rsconnect</code></a> package. The package’s <a href="https://shiny.rstudio.com/articles/shinyapps.html">Getting Started vignette</a> describes how to do so in detail; we summarize the steps in this vignette as well.</p>
-<p>First, load the <code>rsconnect</code> package and set the account name, token, and secret, which can be found on the Profile / Tokens page of your [<a href="https://www.shinyapps.io" class="uri">https://www.shinyapps.io</a>] account.</p>
+<p>Alternatively, you can deploy the application directly from R using the <a href="https://github.com/rstudio/rsconnect"><code>rsconnect</code></a> package. The package’s <a href="https://shiny.rstudio.com/articles/shinyapps.html">“Getting Started” vignette</a> describes how to do so in detail; we summarize the steps in this vignette as well.</p>
+<p>First, load the <code>rsconnect</code> package and set the account name, token, and secret, which can be found on the Profile / Tokens page of your <a href="https://www.shinyapps.io">shinyapps.io</a> account.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/rsconnect">rsconnect</a></span><span class="op">)</span>
+
+<span class="fu">rsconnect</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rsconnect/man/setAccountInfo.html">setAccountInfo</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"&lt;ACCOUNT&gt;"</span>, token<span class="op">=</span><span class="st">"&lt;TOKEN&gt;"</span>, secret<span class="op">=</span><span class="st">"&lt;SECRET&gt;"</span><span class="op">)</span></code></pre></div>
 <p>Next, deploy the application using the <a href="https://rdrr.io/cran/rsconnect/man/deployApp.html"><code>deployApp</code></a> function, supplying an application name:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/rsconnect/man/deployApp.html">deployApp</a></span><span class="op">(</span>appDir <span class="op">=</span> <span class="st">"app"</span>, appName <span class="op">=</span> <span class="st">"gaussian_processes"</span><span class="op">)</span></code></pre></div>
 <p>Once the deployment is complete, the notebook will be available as an online Shiny application. The example notebook used here can be found at <a href="https://hsusmann.shinyapps.io/gaussian_processes/">https://hsusmann.shinyapps.io/gaussian_processes/</a>.</p>
   </div>
 

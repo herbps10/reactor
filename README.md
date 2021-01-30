@@ -91,7 +91,7 @@ Any R variable with the class "htmlwidget" will be rendered as HTML.
 Reactor notebooks are saved as [R markdown](https://rmarkdown.rstudio.com/articles_intro.html) files, which you can open and edit like any other Rmd file. You can see examples of notebook files in the [`inst/examples`](https://github.com/herbps10/reactor/tree/master/inst/examples) folder.
 
 ### Run as Shiny
-Reactor notebooks can be run as Shiny applications, making it easy to deploy notebooks online for sharing with others. 
+Reactor notebooks can be run as Shiny applications, making it easy to deploy notebooks online for sharing with others. See `vignette("shiny_deployment")` for an example of deploying a notebook to [shinyapps.io](https://www.shinyapps.io).
 
 ## And more
 

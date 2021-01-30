@@ -28,7 +28,7 @@ notebook <- reactor_example("gaussian_processes.Rmd")
 ```
 
 If you'd like to start from scratch with a new notebook, you can run:
-```{r, eval = FALSE, echo = TRUE}
+```r
 notebook <- ReactorNotebook$new()
 
 server <- start_reactor(notebook)
@@ -36,12 +36,12 @@ server <- start_reactor(notebook)
 
 Now that we have a notebook, we need to export it as a Shiny application. The `export_shiny` function takes a notebook and creates two files in a given directory: `notebook.Rmd`, which contains the Reactor notebook, and `app.R`, which launches the notebook as a Shiny application. Create a folder, here we call it `app`, and then run:
 
-```{r, eval = FALSE, echo = TRUE}
+```r
 export_shiny(notebook, "./app")
 ```
 
 The newly created file `./app/app.R` contains the following:
-```{r, eval = FALSE, echo = TRUE}
+```r
 # shinyApp
 
 library(shiny)
@@ -54,11 +54,11 @@ start_reactor_as_shiny(notebook)
 
 If you open `app.R` in RStudio, it will recognize it as a Shiny application and the `Run App` button will appear above the editor. You can deploy the application to `shinyapps.io` using the built-in tools from RStudio. 
 
-Alternatively, you can deploy the application directly from R using the [`rsconnect`](https://github.com/rstudio/rsconnect) package. The package's [Getting Started vignette](https://shiny.rstudio.com/articles/shinyapps.html) describes how to do so in detail; we summarize the steps in this vignette as well.
+Alternatively, you can deploy the application directly from R using the [`rsconnect`](https://github.com/rstudio/rsconnect) package. The package's ["Getting Started" vignette](https://shiny.rstudio.com/articles/shinyapps.html) describes how to do so in detail; we summarize the steps in this vignette as well.
 
-First, load the `rsconnect` package and set the account name, token, and secret, which can be found on the Profile / Tokens page of your [https://www.shinyapps.io] account.
+First, load the `rsconnect` package and set the account name, token, and secret, which can be found on the Profile / Tokens page of your [shinyapps.io](https://www.shinyapps.io) account.
 
-```{r, eval = FALSE, echo = TRUE}
+```r
 library(rsconnect)
 
 rsconnect::setAccountInfo(name="<ACCOUNT>", token="<TOKEN>", secret="<SECRET>")
@@ -66,7 +66,7 @@ rsconnect::setAccountInfo(name="<ACCOUNT>", token="<TOKEN>", secret="<SECRET>")
 
 Next, deploy the application using the [`deployApp`](https://rdrr.io/cran/rsconnect/man/deployApp.html) function, supplying an application name:
 
-```{r, eval = FALSE, echo = TRUE}
+```r
 deployApp(appDir = "app", appName = "gaussian_processes")
 ```
 
