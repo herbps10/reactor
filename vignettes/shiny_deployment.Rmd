@@ -23,7 +23,7 @@ library(reactor)
 
 
 For this vignette, we'll use the Gaussian Processes example notebook provided in the package:
-```{r}
+```r
 notebook <- reactor_example("gaussian_processes.Rmd")
 ```
 
